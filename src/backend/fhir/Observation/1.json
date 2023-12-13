@@ -1,0 +1,32 @@
+[
+    {
+        "id": 1,
+        "notes": "John struggled with the mobility of his injured (right) knee, I have assigned him some stretches to undertake. Initial measurements taken", 
+        "date": "2023-01-01",
+        "desired value": 120,
+        "measurements": [90],
+        "staff": "Dr. Smith"
+    },
+    {
+        "id": 1,
+        "notes": "John has shown some improvement and feels less pain in his knee. I have assigned him some more advanced stretches",
+        "date": "2023-01-08",
+        "measurements": [100],
+        "staff": "Dr. Smith"
+    },
+    {
+        "id": 1,
+        "notes": "john has shown good progress and is now able to walk without pain. I have assigned him some strengthening exercises",
+        "date": "2023-01-15",
+        "measurements": [110],
+        "staff": "Dr. Smith"
+    },
+    {
+        "id": 1,
+        "notes": "john has continued to improved. I have assigned him some more advanced strengthening exercises",
+        "date": "2023-01-22",
+        "measurements": [115], 
+        "staff": "Dr. Smith"
+    }
+
+]
