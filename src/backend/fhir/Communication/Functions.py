@@ -20,7 +20,7 @@ def savePatient(patient: Patient, directory: str) -> None:
 def saveObservation(observation: Observation, directory: str) -> None:
     #save the session object to a file
     #need more checks such as if the file already exists
-    filename = observation['id'] + ".json"
+    filename = str(observation.id) + ".json"
     with open(os.path.join(directory, filename), "w") as f:
         f.write(json.dumps(observation.dict(), indent=4))
 
@@ -40,6 +40,8 @@ def getImprovement(id: str, path: str) -> tuple[int, list]: #path is the path to
         return desired, res
 
 def createObservation(observation: dict) -> Observation:
+    observation.setdefault('status', 'final')
+    observation.setdefault('code', {'text': 'no noticable changes'})
     #assign the observation dictionary to a new observation object and return it
     newObservation = Observation(**observation)
     return newObservation
