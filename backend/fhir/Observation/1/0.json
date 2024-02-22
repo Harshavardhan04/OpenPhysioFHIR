@@ -1,0 +1,8 @@
+
+{
+    "id":1,
+    "status":"final",
+    "code":{"coding": [{"system": "http://loinc.org", "code": "123"}]},
+    "valueString": "90",
+    "bodySite":{"coding": [{"system": "http://snomed.info/sct", "code": "999"}]}
+}

@@ -1,0 +1,22 @@
+{
+    "resourceType": "Observation",
+    "id": "1",
+    "status": "final",
+    "code": {
+        "coding": [
+            {
+                "system": "http://loinc.org",
+                "code": "1"
+            }
+        ]
+    },
+    "valueString": "5",
+    "bodySite": {
+        "coding": [
+            {
+                "system": "http://snomed.info/sct",
+                "code": "999"
+            }
+        ]
+    }
+}
