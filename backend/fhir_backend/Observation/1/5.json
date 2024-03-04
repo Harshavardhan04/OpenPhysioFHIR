@@ -6,16 +6,16 @@
         "coding": [
             {
                 "system": "http://loinc.org",
-                "code": "1"
+                "code": "2"
             }
         ]
     },
-    "valueString": "20",
+    "valueString": "19",
     "bodySite": {
         "coding": [
             {
                 "system": "http://snomed.info/sct",
-                "code": "888"
+                "code": "999"
             }
         ]
     }

@@ -11,3 +11,24 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.snomed-glossary-button {
+  display: inline-block;
+  padding: 10px 20px;
+  margin: 10px;
+  font-size: 16px;
+  color: #007bff; /* Assuming blue text to match the theme */
+  background-color: #ffffff;
+  border: 1px solid #007bff;
+  border-radius: 5px;
+  text-align: center;
+  text-decoration: none;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.snomed-glossary-button:hover,
+.snomed-glossary-button:focus {
+  background-color: #007bff;
+  color: #ffffff;
+  text-decoration: none; /* Removes underline on hover */
+}

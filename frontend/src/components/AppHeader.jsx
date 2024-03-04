@@ -4,30 +4,34 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useProSidebar } from "react-pro-sidebar";
+import teamLogo from '../../src/assets/teamlogo.png';
+import teamLogo2 from '../../src/assets/teamlogo2.png';
+import { useNavigate } from "react-router-dom";
+
 
 function AppHeader() {
-    const {collapseSidebar, toggleSidebar, broken} = useProSidebar();
+
+    const navigate = useNavigate();
+    const handleLogout = () => {
+        // Add any pre-logout logic here (e.g., clearing local storage, tokens, etc.)
+
+        // Navigate to the home page
+        navigate('/');
+    };
+
+    const { collapseSidebar, toggleSidebar, broken } = useProSidebar();
     return (<AppBar position="sticky" sx={styles.appBar}>
         <Toolbar>
-            <IconButton onClick={() => broken ? toggleSidebar(): collapseSidebar()} color="secondary">
-                <MenuTwoToneIcon />
-            </IconButton>
             <Box
-                component = 'img'
-                sx = {styles.appLogo}
-                src = '/src/assets/teamlogo.png'/>
-             <Box sx = {{flexGrow: 1}}/>       
-            <IconButton title = 'Notifications' color = 'secondary'>
-                <Badge badgeContent = {14} color = "error">
-                    <NotificationsIcon/>
-                    </Badge>
-                </IconButton>
-                <IconButton title = 'Settings' color = 'secondary'>
-                    <SettingsIcon/>
-                </IconButton>
-                <IconButton title = 'Logout' color = 'secondary'>
-                    <LogoutIcon/>
-                </IconButton>
+                component='img'
+                sx={styles.appLogo}
+                src={teamLogo} 
+                onClick={() => navigate('/')}/>
+            
+            <Box sx={{ flexGrow: 1 }} />
+            <IconButton title='Logout' color='secondary' onClick={handleLogout}>
+                <LogoutIcon />
+            </IconButton>
         </Toolbar>
     </AppBar>
     );
@@ -38,8 +42,8 @@ const styles = {
     appBar: {
         bgcolor: 'neutral.main'
     },
-    appLogo:{
-        borderRadius:2,
+    appLogo: {
+        borderRadius: 2,
         width: 80,
         ml: 2,
         cursor: 'pointer'

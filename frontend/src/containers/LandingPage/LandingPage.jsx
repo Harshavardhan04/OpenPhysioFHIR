@@ -1,55 +1,5 @@
 
 
-// import React, { useState } from 'react';
-// import { Box, Typography, TextField, Button } from '@mui/material';
-// import { useNavigate } from 'react-router-dom';
-// import axios from 'axios';
-
-// function LandingPage() {
-//     const [patientID, setPatientID] = useState(''); 
-//     const navigate = useNavigate();
-
-//     const handleNext = () => {
-//         if (!patientID.trim()) {
-//             alert("Please enter a patient ID.");
-//             return;
-//         }
-
-//         navigate(`/update-patient`);
-//     };
-
-//     return (
-//         <Box
-//             sx={{
-//                 display: 'flex',
-//                 flexDirection: 'column',
-//                 alignItems: 'center',
-//                 justifyContent: 'center',
-//                 height: '100vh',
-//             }}
-//         >
-//             <Typography variant="h4" gutterBottom>Find Patient Profile</Typography>
-//             <TextField
-//                 label="Enter Patient ID"
-//                 value={patientID}
-//                 onChange={(e) => setPatientID(e.target.value)}
-//                 variant="outlined"
-//                 margin="normal"
-//             />
-//             <Button
-//                 variant="contained"
-//                 onClick={handleNext}
-//                 sx={{ marginTop: '20px' }}
-//             >
-//                 Next
-//             </Button>
-//         </Box>
-//     );
-// }
-
-// export default LandingPage;
-
-
 import React, { useState } from 'react';
 import { Box, Typography, TextField, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';

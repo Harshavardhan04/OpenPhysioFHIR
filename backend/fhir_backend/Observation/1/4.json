@@ -10,12 +10,12 @@
             }
         ]
     },
-    "valueString": "10",
+    "valueString": "21",
     "bodySite": {
         "coding": [
             {
                 "system": "http://snomed.info/sct",
-                "code": "999"
+                "code": "888"
             }
         ]
     }

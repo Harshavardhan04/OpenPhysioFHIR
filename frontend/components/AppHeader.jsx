@@ -15,7 +15,7 @@ function AppHeader() {
             <Box
                 component = 'img'
                 sx = {styles.appLogo}
-                src = '../src/assets/teamlogo.png'/>
+                src = '../../src/assets/teamlogo.png'/>
              <Box sx = {{flexGrow: 1}}/>       
             <IconButton title = 'Notifications' color = 'secondary'>
                 <Badge badgeContent = {14} color = "error">
