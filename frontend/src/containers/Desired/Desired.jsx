@@ -37,8 +37,10 @@ const Desired = () => {
     };
 
     const handleEditChange = (snomedCode, value) => {
-        setEditStates(prev => ({ ...prev, [snomedCode]: value }));
+        const positiveValue = Math.max(0, parseFloat(value) || 0); // Ensure only positive values
+        setEditStates(prev => ({ ...prev, [snomedCode]: positiveValue.toString() })); // Store as string to preserve input format
     };
+
 
     return (
         <Paper sx={{ p: 2, margin: 'auto', maxWidth: 500, flexGrow: 1 }}>
@@ -56,10 +58,13 @@ const Desired = () => {
                             <TableCell>{snomed}</TableCell>
                             <TableCell>
                                 <TextField
+                                    type="number"
+                                    inputProps={{ min: "0" }} // This ensures that the input does not accept negative numbers
                                     value={editStates[snomed] ?? desired}
                                     onChange={(e) => handleEditChange(snomed, e.target.value)}
                                     size="small"
                                 />
+
                             </TableCell>
                             <TableCell>
                                 <Button

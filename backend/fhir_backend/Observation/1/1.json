@@ -6,11 +6,11 @@
         "coding": [
             {
                 "system": "http://loinc.org",
-                "code": "1"
+                "code": "2"
             }
         ]
     },
-    "valueString": "5",
+    "valueString": "20",
     "bodySite": {
         "coding": [
             {
