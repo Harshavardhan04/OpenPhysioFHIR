@@ -313,6 +313,7 @@ function Dashboard() {
               </TableContainer>
               <Box sx={{ mt: 2 }}>
                 <Button variant="contained" color="primary" onClick={() => navigate('/past-data')}>Show More Past Data</Button>
+                {/* style={{ backgroundColor: '#007f3b', color: '#ffffff' }} */}
               </Box>
             </CardContent>
           </Card>
