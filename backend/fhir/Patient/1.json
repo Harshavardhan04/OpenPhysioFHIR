@@ -1,9 +1,0 @@
-
-{
-    "resourceType": "Patient",
-    "id": "001",
-    "active": true,
-    "name": [
-    {"text": "Adam Smith"}],
-    "birthDate": "1985-06-12"
-}
