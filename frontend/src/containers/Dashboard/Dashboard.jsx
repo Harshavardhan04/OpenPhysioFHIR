@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useForm, useFieldArray } from "react-hook-form";
-// import { useTheme } from "@mui/material/styles";
 import {
   Box, Typography, Button, IconButton, Grid, TextField, Paper, Dialog,
   DialogActions, DialogTitle, DialogContent, DialogContentText, Collapse, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Switch, FormControlLabel
@@ -10,7 +9,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import DeleteIcon from '@mui/icons-material/Delete';
-import Desired from '../Desired/Desired'; // Make sure Desired is correctly imported
+import Desired from '../Desired/Desired'; 
 import { useNavigate } from 'react-router-dom';
 import {
   FormControl,
@@ -58,12 +57,6 @@ function Dashboard() {
   const [chartData, setChartData] = useState({});
   const [snomedOptions, setSnomedOptions] = useState([]);
   const [snomedCodesAndValues, setSnomedCodesAndValues] = useState([]);
-  // const { register, control, handleSubmit, setValue } = useForm({
-  //   defaultValues: {
-  //     notes: '',
-  //     sessionValues: [{ snowmedName: '', loincName: '', value: '' }]
-  //   }
-  // });
   const { register, control, handleSubmit, setValue, formState: { errors } } = useForm({
     defaultValues: {
       notes: '',
@@ -99,7 +92,6 @@ function Dashboard() {
             patientID: patientID
           });
 
-          // Ensure notes and measurements are set correctly if they exist in the response
           if (data.notes) {
             setValue('notes', data.notes);
           }
@@ -313,7 +305,6 @@ function Dashboard() {
               </TableContainer>
               <Box sx={{ mt: 2 }}>
                 <Button variant="contained" color="primary" onClick={() => navigate('/past-data')}>Show More Past Data</Button>
-                {/* style={{ backgroundColor: '#007f3b', color: '#ffffff' }} */}
               </Box>
             </CardContent>
           </Card>
@@ -394,7 +385,7 @@ function Dashboard() {
               multiline
               rows={4}
               {...register("notes", {
-                required: 'Problem description is required', // This makes the field mandatory
+                required: 'Problem description is required', 
               })}
               error={!!errors.notes}
               helperText={errors.notes?.message}
@@ -413,8 +404,8 @@ function Dashboard() {
                       {...register(`sessionValues.${index}.snowmedName`, {
                         required: 'SNOMED CT Code is required',
                         pattern: {
-                          value: /^[0-9]+$/, // Regex for numeric strings
-                          message: 'Invalid SNOMED CT code', // Error message when validation fails
+                          value: /^[0-9]+$/, 
+                          message: 'Invalid SNOMED CT code', 
                         },
                       })}
                       error={errors.sessionValues?.[index]?.snowmedName ? true : false}
@@ -441,12 +432,12 @@ function Dashboard() {
                       {...register(`sessionValues.${index}.value`, {
                         required: 'Value is required',
                         pattern: {
-                          value: /^\d*\.?\d+$/,  // This regex allows only positive numbers and decimals
-                          message: 'Invalid value', // Message to show if pattern validation fails
+                          value: /^\d*\.?\d+$/,  
+                          message: 'Invalid value', 
                         },
-                        setValueAs: v => v === "" ? "" : String(v), // Keep value as string to preserve leading zeros if necessary
+                        setValueAs: v => v === "" ? "" : String(v), 
                         onInput: (e) => {
-                          e.target.value = e.target.value.replace(/^-/, ''); // Remove negative sign if entered
+                          e.target.value = e.target.value.replace(/^-/, ''); 
                         },
                       })}
                       error={!!errors.sessionValues?.[index]?.value}

@@ -39,12 +39,12 @@ const ViewCharts = () => {
       const response = await axios.post('/chart-data', { snomedCode });
       const observations = response.data.observations;
       const desired = response.data.desired;
-      
-      // Prepare the labels and data for the chart
-      const labels = observations.map((_, index) => `Session ${index + 1}`);
-      const data = observations.map(value => value !== undefined ? value : NaN); // Chart.js skips NaN values
 
-      // Update the chart data state
+
+      const labels = observations.map((_, index) => `Session ${index + 1}`);
+      const data = observations.map(value => value !== undefined ? value : NaN);
+
+
       setChartData({
         labels,
         datasets: [
@@ -120,7 +120,6 @@ const ViewCharts = () => {
             elements: {
               point: {
                 radius: (context) => {
-                  // Increase radius for non-NaN values
                   return context.raw !== NaN ? 5 : 0;
                 }
               }

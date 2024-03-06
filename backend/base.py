@@ -7,7 +7,6 @@ import logging
 
 api = Flask(__name__)
 
-# Enable CORS for just the /profile endpoint for the React origin
 CORS(api, resources={r"/profile": {"origins": "http://localhost:3000"}})
 CORS(api, resources={r"/past-data": {"origins": "http://localhost:3000"}})
 CORS(api, resources={r"/chart-data": {"origins": "http://localhost:3000"}})

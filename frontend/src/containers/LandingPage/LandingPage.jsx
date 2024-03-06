@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 function LandingPage() {
-    const [patientID, setPatientID] = useState(''); 
+    const [patientID, setPatientID] = useState('');
     const navigate = useNavigate();
 
     const handleNext = () => {
@@ -15,22 +15,18 @@ function LandingPage() {
             return;
         }
 
-        // Axios POST request to /search-profile with patientID
         axios.post('/search-profile', {
-            patientID: patientID // Assuming the backend expects a field named patientID
+            patientID: patientID
         })
-        .then(response => {
-            // Handle the response from the server
-            // Assuming the response includes patient data, navigate to /update-patient with this data
-            // You might want to pass the patient data to the next component or store it in a global state
-            console.log(response.data); // Logging the response data for debugging
-            navigate(`/update-patient`); // Navigate to update patient page
-        })
-        .catch(error => {
-            // Handle any errors here
-            console.error("There was an error searching for the patient profile:", error);
-            alert("Failed to find patient profile. Please check the patient ID and try again.");
-        });
+            .then(response => {
+                console.log(response.data);
+                navigate(`/update-patient`);
+            })
+            .catch(error => {
+
+                console.error("There was an error searching for the patient profile:", error);
+                alert("Failed to find patient profile. Please check the patient ID and try again.");
+            });
     };
 
     return (

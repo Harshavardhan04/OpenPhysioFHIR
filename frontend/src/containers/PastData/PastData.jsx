@@ -19,8 +19,8 @@ import {
     Container
 } from '@mui/material';
 
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';  // Importing back icon for the button
-import { useNavigate } from 'react-router-dom'; // Importing useNavigate for navigation
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';  
+import { useNavigate } from 'react-router-dom'; 
 
 
 function PastDataPage() {
@@ -52,26 +52,20 @@ function PastDataPage() {
     }, [startConsultation, endConsultation]);
 
     function downloadConsultationData(arrayIndex) {
-        // Adjust the consultation number to account for the starting point.
-        // If startConsultation is 3 and arrayIndex is 0 (the first item in the filtered list), 
-        // the consultation number should be 3, not 0 or 4.
         const consultationNumber = parseInt(startConsultation) + arrayIndex;
     
         let csvContent = "data:text/csv;charset=utf-8,";
         csvContent += "Consultation Number,SNOMED Code,Value\n";
     
         Object.keys(snomedData).forEach((snomedCode) => {
-            // No adjustment needed here as the value is directly accessed by arrayIndex.
             const value = snomedData[snomedCode][arrayIndex];
             if (value) {
                 csvContent += `${consultationNumber},${snomedCode},${value}\n`;
             }
         });
     
-        // Fetch and format the corresponding note for this specific consultation.
         csvContent += `\nNotes\n"${notes[arrayIndex]}"`;
     
-        // Generate and trigger the download link.
         const encodedUri = encodeURI(csvContent);
         const link = document.createElement("a");
         link.setAttribute("href", encodedUri);
@@ -113,7 +107,7 @@ function PastDataPage() {
           variant="outlined"
           type="number"
           fullWidth
-          inputProps={{ min: "0" }} // This ensures the input field does not accept negative values
+          inputProps={{ min: "0" }} 
           error={parseInt(startConsultation, 10) > parseInt(endConsultation, 10)}
           helperText={parseInt(startConsultation, 10) > parseInt(endConsultation, 10) ? "Start number should be less than or equal to end number" : ""}
       />
@@ -127,7 +121,7 @@ function PastDataPage() {
           variant="outlined"
           type="number"
           fullWidth
-          inputProps={{ min: "0" }} // This ensures the input field does not accept negative values
+          inputProps={{ min: "0" }} 
           error={parseInt(endConsultation, 10) < parseInt(startConsultation, 10)}
           helperText={parseInt(endConsultation, 10) < parseInt(startConsultation, 10) ? "End number should be greater than or equal to start number" : ""}
       />
@@ -159,7 +153,6 @@ function PastDataPage() {
                                 snomedData[snomed]?.map((value, index) =>
                                     value && (
                                         <TableRow key={`${snomed}-${index}`}>
-                                            {/* Adjust the consultation number to reflect the user input */}
                                             <TableCell>{parseInt(startConsultation) + index}</TableCell>
                                             <TableCell>{snomed}</TableCell>
                                             <TableCell>{value}</TableCell>

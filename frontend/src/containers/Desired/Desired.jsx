@@ -15,7 +15,6 @@ const Desired = () => {
         try {
             const response = await axios.get('/desired');
             setDesiredValues(response.data.map(item => ({ snomed: item[0], desired: item[1] })));
-            // Initialize editStates with the fetched data
             const initialEditStates = response.data.reduce((acc, item) => {
                 acc[item[0]] = item[1];
                 return acc;
@@ -30,15 +29,15 @@ const Desired = () => {
         const newValue = editStates[snomedCode];
         try {
             await axios.post('/desired', { snomedCode, desired: newValue });
-            fetchDesiredValues(); // Refresh the data
+            fetchDesiredValues();
         } catch (error) {
             console.error("Failed to update desired value", error);
         }
     };
 
     const handleEditChange = (snomedCode, value) => {
-        const positiveValue = Math.max(0, parseFloat(value) || 0); // Ensure only positive values
-        setEditStates(prev => ({ ...prev, [snomedCode]: positiveValue.toString() })); // Store as string to preserve input format
+        const positiveValue = Math.max(0, parseFloat(value) || 0);
+        setEditStates(prev => ({ ...prev, [snomedCode]: positiveValue.toString() }));
     };
 
 
@@ -59,7 +58,7 @@ const Desired = () => {
                             <TableCell>
                                 <TextField
                                     type="number"
-                                    inputProps={{ min: "0" }} // This ensures that the input does not accept negative numbers
+                                    inputProps={{ min: "0" }}
                                     value={editStates[snomed] ?? desired}
                                     onChange={(e) => handleEditChange(snomed, e.target.value)}
                                     size="small"
