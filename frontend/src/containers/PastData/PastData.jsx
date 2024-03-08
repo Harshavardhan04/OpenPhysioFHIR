@@ -19,8 +19,8 @@ import {
     Container
 } from '@mui/material';
 
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';  
-import { useNavigate } from 'react-router-dom'; 
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { useNavigate } from 'react-router-dom';
 
 
 function PastDataPage() {
@@ -53,19 +53,19 @@ function PastDataPage() {
 
     function downloadConsultationData(arrayIndex) {
         const consultationNumber = parseInt(startConsultation) + arrayIndex;
-    
+
         let csvContent = "data:text/csv;charset=utf-8,";
         csvContent += "Consultation Number,SNOMED Code,Value\n";
-    
+
         Object.keys(snomedData).forEach((snomedCode) => {
             const value = snomedData[snomedCode][arrayIndex];
             if (value) {
                 csvContent += `${consultationNumber},${snomedCode},${value}\n`;
             }
         });
-    
+
         csvContent += `\nNotes\n"${notes[arrayIndex]}"`;
-    
+
         const encodedUri = encodeURI(csvContent);
         const link = document.createElement("a");
         link.setAttribute("href", encodedUri);
@@ -73,59 +73,47 @@ function PastDataPage() {
         document.body.appendChild(link);
         link.click();
     }
-    
-    
-    
-    
+
+
+
+
 
     return (
         <Container>
-            <Button style={{ marginTop: '20px' }}
-                startIcon={<ArrowBackIcon />}
-                variant="contained"
-                color="primary"
-                onClick={() => navigate('/update-patient')}
-                sx={{ marginBottom: 2 }}
-            >
-                Back to Dashboard
-            </Button>
 
-           
-                <Box sx={{ my: 4 }}>
-  <Typography variant="h4" gutterBottom component="div">
-      Consultation Data
-  </Typography>
+            <Box sx={{ width: '100%', mt: 4 }}>
 
-  <Box sx={{ display: 'flex', gap: 2, marginBottom: 2 }}>
-      <TextField
-          label="Start Consultation Number"
-          value={startConsultation}
-          onChange={(e) => {
-              const newValue = Math.max(0, parseInt(e.target.value, 10) || 0);
-              setStartConsultation(newValue.toString());
-          }}
-          variant="outlined"
-          type="number"
-          fullWidth
-          inputProps={{ min: "0" }} 
-          error={parseInt(startConsultation, 10) > parseInt(endConsultation, 10)}
-          helperText={parseInt(startConsultation, 10) > parseInt(endConsultation, 10) ? "Start number should be less than or equal to end number" : ""}
-      />
-      <TextField
-          label="End Consultation Number"
-          value={endConsultation}
-          onChange={(e) => {
-              const newValue = Math.max(0, parseInt(e.target.value, 10) || 0);
-              setEndConsultation(newValue.toString());
-          }}
-          variant="outlined"
-          type="number"
-          fullWidth
-          inputProps={{ min: "0" }} 
-          error={parseInt(endConsultation, 10) < parseInt(startConsultation, 10)}
-          helperText={parseInt(endConsultation, 10) < parseInt(startConsultation, 10) ? "End number should be greater than or equal to start number" : ""}
-      />
-  </Box>
+
+                <Box sx={{ display: 'flex', gap: 2, marginBottom: 2 }}>
+                    <TextField
+                        label="Start Consultation Number"
+                        value={startConsultation}
+                        onChange={(e) => {
+                            const newValue = Math.max(0, parseInt(e.target.value, 10) || 0);
+                            setStartConsultation(newValue.toString());
+                        }}
+                        variant="outlined"
+                        type="number"
+                        fullWidth
+                        inputProps={{ min: "0" }}
+                        error={parseInt(startConsultation, 10) > parseInt(endConsultation, 10)}
+                        helperText={parseInt(startConsultation, 10) > parseInt(endConsultation, 10) ? "Start number should be less than or equal to end number" : ""}
+                    />
+                    <TextField
+                        label="End Consultation Number"
+                        value={endConsultation}
+                        onChange={(e) => {
+                            const newValue = Math.max(0, parseInt(e.target.value, 10) || 0);
+                            setEndConsultation(newValue.toString());
+                        }}
+                        variant="outlined"
+                        type="number"
+                        fullWidth
+                        inputProps={{ min: "0" }}
+                        error={parseInt(endConsultation, 10) < parseInt(startConsultation, 10)}
+                        helperText={parseInt(endConsultation, 10) < parseInt(startConsultation, 10) ? "End number should be greater than or equal to start number" : ""}
+                    />
+                </Box>
 
 
 

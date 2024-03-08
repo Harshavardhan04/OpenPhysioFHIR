@@ -11,6 +11,8 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Desired from '../Desired/Desired';
 import { useNavigate } from 'react-router-dom';
+import PastDataPage from '../PastData/PastData';
+import ViewCharts from '../ViewCharts/ViewCharts';
 import {
   FormControl,
   InputLabel,
@@ -57,6 +59,7 @@ function Dashboard() {
   const [chartData, setChartData] = useState({});
   const [snomedOptions, setSnomedOptions] = useState([]);
   const [snomedCodesAndValues, setSnomedCodesAndValues] = useState([]);
+  const [showNewConsultation, setShowNewConsultation] = useState(false);
   const { register, control, handleSubmit, setValue, formState: { errors } } = useForm({
     defaultValues: {
       notes: '',
@@ -76,6 +79,13 @@ function Dashboard() {
     patientID: ''
   });
 
+
+  const handleNewConsultationClick = () => {
+    setShowNewConsultation(true);
+    setTimeout(() => {
+      document.getElementById('newConsultationSection').scrollIntoView({ behavior: 'smooth' });
+    }, 100);
+  };
 
 
   useEffect(() => {
@@ -233,7 +243,6 @@ function Dashboard() {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={() => navigate('/past-data')}>View Past Data</Button>
         <Button onClick={() => setShowSuccessDialog(false)}>Close</Button>
       </DialogActions>
     </Dialog>
@@ -247,7 +256,7 @@ function Dashboard() {
       padding: theme.spacing(3),
       backgroundColor: '#fff',
       borderRadius: theme.shape.borderRadius,
-      boxShadow: theme.shadows[2]
+      // boxShadow: theme.shadows[2]
     }}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Paper elevation={3} sx={{ p: 2, mb: 4 }}>
@@ -262,29 +271,100 @@ function Dashboard() {
         </Paper>
 
 
-        <Box sx={{ mb: 4, mt: 2 }}>
-          <Button variant="contained" color="primary" onClick={() => setView('tabular')}>Tabular View</Button>
-          <Button variant="contained" color="secondary" onClick={() => setView('graphical')}>Graphical View</Button>
-        </Box>
+        <Box sx={{ mb: 4, mt: 2, display: 'flex', gap: 2 }}>
+  <Button
+    variant="contained"
+    sx={{
+      bgcolor: view === 'tabular' ? 'primary.darker' : '#5c6bc0', // Adjusted resting color
+      '&:hover': { bgcolor: 'primary.dark' },
+      color: 'white'
+    }}
+    onClick={() => setView('tabular')}
+  >
+    Latest Consultation Data
+  </Button>
+  <Button
+    variant="contained"
+    sx={{
+      bgcolor: view === 'allData' ? 'primary.darker' : '#5c6bc0', // Adjusted resting color
+      '&:hover': { bgcolor: 'primary.dark' },
+      color: 'white'
+    }}
+    onClick={() => setView('allData')}
+  >
+    Show All Data
+  </Button>
+  <Button
+    variant="contained"
+    sx={{
+      bgcolor: view === 'graphical' ? 'primary.darker' : '#5c6bc0', // Adjusted resting color
+      '&:hover': { bgcolor: 'primary.dark' },
+      color: 'white'
+    }}
+    onClick={() => setView('graphical')}
+  >
+    Graphical View
+  </Button>
+
+  <Button
+    variant="contained"
+    sx={{
+      bgcolor: view === 'manageDesired' ? 'primary.darker' : '#5c6bc0', 
+      '&:hover': { bgcolor: 'primary.dark' },
+      color: 'white'
+    }}
+    onClick={() => setView('manageDesired')}
+  >
+    Manage Desired SNOMED Values
+  </Button>
+
+
+  <Button
+    variant="contained"
+    sx={{
+      marginLeft: 'auto',
+      bgcolor: 'primary.dark', 
+      '&:hover': {
+        bgcolor: 'primary.darker',
+      },
+      color: 'white',
+      fontSize: '1rem',
+      padding: '10px 20px',
+    }}
+    onClick={handleNewConsultationClick}
+  >
+    New Consultation
+  </Button>
+</Box>
+
+
+
+
 
         {view === 'tabular' && (
-
           <Card elevation={4}>
             <CardContent>
-              <a href="https://www.csp.org.uk/system/files/csp_snomed_ct_subsets_20160414_v1.pdf" class="snomed-glossary-button" target="_blank">SNOMED Index Glossary</a>
               <Typography variant="h4" gutterBottom component="div">
                 Latest Consultation Details
               </Typography>
-              <Box sx={{ my: 2 }}>
-                <Typography variant="h6" component="div">
-                  <strong>Consultation Note:</strong>
-                </Typography>
-                <Typography variant="body1" sx={{ marginBottom: 2 }}>
-                  {consultationNote}
-                </Typography>
-              </Box>
-              <TableContainer component={Paper}>
 
+              {/* Move the SNOMED Index Glossary link to the top right of the card */}
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                <Box>
+                  <Typography variant="h6" component="div">
+                    <strong>Consultation Note:</strong>
+                  </Typography>
+                  <Typography variant="body1" sx={{ marginBottom: 2 }}>
+                    {consultationNote}
+                  </Typography>
+                </Box>
+                <a href="https://www.csp.org.uk/system/files/csp_snomed_ct_subsets_20160414_v1.pdf" class="snomed-glossary-button" target="_blank">SNOMED Index Glossary</a>
+              </Box>
+
+              {/* Add a title for the observations table */}
+              <strong><u>Observations recorded</u></strong>
+
+              <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                   <TableHead>
                     <TableRow>
@@ -308,75 +388,131 @@ function Dashboard() {
                   </TableBody>
                 </Table>
               </TableContainer>
-              <Box sx={{ mt: 2 }}>
-                <Button variant="contained" color="primary" onClick={() => navigate('/past-data')}>Show More Past Data</Button>
+            </CardContent>
+          </Card>
+        )}
+        {view === 'graphical' && (
+          <ViewCharts
+            selectedSnomed={selectedSnomed}
+            snomedOptions={snomedOptions}
+            chartData={chartData}
+            setSelectedSnomed={setSelectedSnomed} // Make sure this function is defined in Dashboard component
+          />
+        )}
+
+        {view === 'allData' && (
+          <Card elevation={4} style={{ marginTop: '20px' }}>
+            <CardContent>
+              <Typography variant="h4" gutterBottom>
+                Past Data
+              </Typography>
+              <PastDataPage />
+            </CardContent>
+          </Card>
+        )}
+
+        {view === 'manageDesired' && <Desired snomedCodesAndValues={snomedCodesAndValues} />}
+
+        {showNewConsultation && (
+          <Card elevation={4} id="newConsultationSection" style={{ marginTop: '20px' }}>
+            <CardContent>
+              <Typography variant="h4" gutterBottom >
+                Today's Consultation
+              </Typography>
+
+
+
+              <TextField
+                label="Problem Description"
+                variant="outlined"
+                margin="normal"
+                fullWidth
+                multiline
+                rows={4}
+                {...register("notes", {
+                  required: 'Problem description is required',
+                })}
+                error={!!errors.notes}
+                helperText={errors.notes?.message}
+              />
+
+              <Typography sx={{ mt: 4, mb: 2 }}>Session Values:</Typography>
+              <Grid container spacing={2}>
+
+                {fields.map((item, index) => (
+                  <Grid item xs={12} key={item.id}>
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                      <TextField
+                        label={`SNOMED ${index + 1} CT Code `}
+                        variant="outlined"
+                        sx={{ mr: 1, flex: 1 }}
+                        {...register(`sessionValues.${index}.snowmedName`, {
+                          required: 'SNOMED CT Code is required',
+                          pattern: {
+                            value: /^[0-9]+$/,
+                            message: 'Invalid SNOMED CT code',
+                          },
+                        })}
+                        error={errors.sessionValues?.[index]?.snowmedName ? true : false}
+                        helperText={errors.sessionValues?.[index]?.snowmedName?.message || ''}
+                      />
+                      <TextField
+                        label={`LOINC ${index + 1} Name `}
+                        variant="outlined"
+                        sx={{ mr: 1, flex: 1 }}
+                        {...register(`sessionValues.${index}.loincName`, {
+                          required: 'LOINC Name is required',
+                        })}
+                        error={errors.sessionValues?.[index]?.loincName ? true : false}
+                        helperText={errors.sessionValues?.[index]?.loincName?.message || ''}
+                      />
+
+
+
+                      <TextField
+                        label={`Value ${index + 1}`}
+                        type="text"
+                        variant="outlined"
+                        sx={{ mr: 1, flex: 1 }}
+                        {...register(`sessionValues.${index}.value`, {
+                          required: 'Value is required',
+                          pattern: {
+                            value: /^\d*\.?\d+$/,
+                            message: 'Invalid value',
+                          },
+                          setValueAs: v => v === "" ? "" : String(v),
+                          onInput: (e) => {
+                            e.target.value = e.target.value.replace(/^-/, '');
+                          },
+                        })}
+                        error={!!errors.sessionValues?.[index]?.value}
+                        helperText={errors.sessionValues?.[index]?.value?.message}
+                      />
+
+                      <IconButton aria-label="delete" onClick={() => remove(index)}>
+                        <DeleteIcon />
+                      </IconButton>
+                    </Box>
+                  </Grid>
+                ))}
+
+                <IconButton color="primary" aria-label="add field" onClick={() => append({ snowmedName: '', loincName: '', value: '' })}>
+                  <AddCircleOutlineIcon />
+                </IconButton>
+              </Grid>
+
+              <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: theme.spacing(2), mt: 4 }}>
+                <Button variant="contained" color="primary" startIcon={<SaveIcon />} type="submit">Save</Button>
               </Box>
             </CardContent>
           </Card>
-
         )}
+        <SuccessDialog />
 
-        {view === 'graphical' && (
-          <Card elevation={4}>
-            <CardContent>
-              <Typography variant="h4" gutterBottom component="div">
-                Observation Chart
-              </Typography>
-              <FormControl fullWidth margin="normal">
-                <InputLabel id="snomed-select-label">SNOMED Code</InputLabel>
-                <Select
-                  labelId="snomed-select-label"
-                  value={selectedSnomed}
-                  label="SNOMED Code"
-                  onChange={(e) => setSelectedSnomed(e.target.value)}
-                >
-                  {snomedOptions.map((option) => (
-                    <MenuItem key={option} value={option}>{option}</MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-              {selectedSnomed && chartData.labels && (
-                <Line
-                  data={chartData}
-                  options={{
-                    responsive: true,
-                    plugins: {
-                      legend: {
-                        position: 'top',
-                      },
-                      title: {
-                        display: true,
-                        text: `SNOMED ${selectedSnomed} Observation Chart`,
-                      },
-                    },
-                    scales: {
-                      y: {
-                        beginAtZero: true,
-                        grace: '5%',
-                      }
-                    },
-                    interaction: {
-                      mode: 'index',
-                      intersect: false,
-                    },
-                    elements: {
-                      point: {
-                        radius: (context) => {
-                          const index = context.dataIndex;
-                          const value = context.dataset.data[index];
-                          return value !== undefined && !isNaN(value) ? 5 : 0;
-                        }
-                      }
-                    }
-                  }}
-                />
-              )}
-            </CardContent>
-          </Card>
-        )}
-        <Card elevation={4} style={{ marginTop: '20px' }} >
-          <CardContent>
-            <Typography variant="h4" gutterBottom >
+
+        {/* <Card elevation={4} style={{ marginTop: '20px' }} >
+          <CardContent> */}
+        {/* <Typography variant="h4" gutterBottom >
               Today's Consultation
             </Typography>
 
@@ -463,24 +599,12 @@ function Dashboard() {
 
             <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: theme.spacing(2), mt: 4 }}>
               <Button variant="contained" color="primary" startIcon={<SaveIcon />} type="submit">Save</Button>
-            </Box>
-          </CardContent>
-        </Card>
+            </Box> */}
+        {/* </CardContent>
+        </Card> */}
       </form>
 
-      <Button
-        variant="contained"
-        color="secondary"
-        onClick={toggleDesired}
-        sx={{ mt: 2 }}
-      >
-        {showDesired ? 'Hide Desired SNOMED Values' : 'Manage Desired SNOMED Values'}
-      </Button>
 
-      <Collapse in={showDesired}>
-        <Desired />
-      </Collapse>
-      <SuccessDialog />
     </Box>
   );
 
