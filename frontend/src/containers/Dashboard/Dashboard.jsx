@@ -9,7 +9,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import DeleteIcon from '@mui/icons-material/Delete';
-import Desired from '../Desired/Desired'; 
+import Desired from '../Desired/Desired';
 import { useNavigate } from 'react-router-dom';
 import {
   FormControl,
@@ -251,11 +251,16 @@ function Dashboard() {
     }}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Paper elevation={3} sx={{ p: 2, mb: 4 }}>
-          <Typography variant="h4" gutterBottom>Patient Details</Typography>
-          <Typography variant="body1"><strong>Name:</strong> {patientProfile.name}</Typography>
-          <Typography variant="body1"><strong>DOB:</strong> {patientProfile.dob}</Typography>
-          <Typography variant="body1"><strong>Patient ID:</strong> {patientProfile.patientID}</Typography>
+          <Typography variant="h4" gutterBottom>
+            Patient Details
+          </Typography>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Typography variant="body1"><strong>Name:</strong> {patientProfile.name}</Typography>
+            <Typography variant="body1"><strong>DOB:</strong> {patientProfile.dob}</Typography>
+            <Typography variant="body1"><strong>Patient ID:</strong> {patientProfile.patientID}</Typography>
+          </Box>
         </Paper>
+
 
         <Box sx={{ mb: 4, mt: 2 }}>
           <Button variant="contained" color="primary" onClick={() => setView('tabular')}>Tabular View</Button>
@@ -263,7 +268,7 @@ function Dashboard() {
         </Box>
 
         {view === 'tabular' && (
-          
+
           <Card elevation={4}>
             <CardContent>
               <a href="https://www.csp.org.uk/system/files/csp_snomed_ct_subsets_20160414_v1.pdf" class="snomed-glossary-button" target="_blank">SNOMED Index Glossary</a>
@@ -279,7 +284,7 @@ function Dashboard() {
                 </Typography>
               </Box>
               <TableContainer component={Paper}>
-               
+
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                   <TableHead>
                     <TableRow>
@@ -385,7 +390,7 @@ function Dashboard() {
               multiline
               rows={4}
               {...register("notes", {
-                required: 'Problem description is required', 
+                required: 'Problem description is required',
               })}
               error={!!errors.notes}
               helperText={errors.notes?.message}
@@ -393,7 +398,7 @@ function Dashboard() {
 
             <Typography sx={{ mt: 4, mb: 2 }}>Session Values:</Typography>
             <Grid container spacing={2}>
-             
+
               {fields.map((item, index) => (
                 <Grid item xs={12} key={item.id}>
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -404,8 +409,8 @@ function Dashboard() {
                       {...register(`sessionValues.${index}.snowmedName`, {
                         required: 'SNOMED CT Code is required',
                         pattern: {
-                          value: /^[0-9]+$/, 
-                          message: 'Invalid SNOMED CT code', 
+                          value: /^[0-9]+$/,
+                          message: 'Invalid SNOMED CT code',
                         },
                       })}
                       error={errors.sessionValues?.[index]?.snowmedName ? true : false}
@@ -432,12 +437,12 @@ function Dashboard() {
                       {...register(`sessionValues.${index}.value`, {
                         required: 'Value is required',
                         pattern: {
-                          value: /^\d*\.?\d+$/,  
-                          message: 'Invalid value', 
+                          value: /^\d*\.?\d+$/,
+                          message: 'Invalid value',
                         },
-                        setValueAs: v => v === "" ? "" : String(v), 
+                        setValueAs: v => v === "" ? "" : String(v),
                         onInput: (e) => {
-                          e.target.value = e.target.value.replace(/^-/, ''); 
+                          e.target.value = e.target.value.replace(/^-/, '');
                         },
                       })}
                       error={!!errors.sessionValues?.[index]?.value}
@@ -462,7 +467,7 @@ function Dashboard() {
           </CardContent>
         </Card>
       </form>
-     
+
       <Button
         variant="contained"
         color="secondary"
