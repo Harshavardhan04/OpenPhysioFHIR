@@ -7,6 +7,7 @@ import {
 } from "@mui/material";
 import SaveIcon from '@mui/icons-material/Save';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import AddBoxIcon from '@mui/icons-material/AddBox';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Desired from '../Desired/Desired';
@@ -264,78 +265,85 @@ function Dashboard() {
             Patient Details
           </Typography>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Typography variant="body1"><strong>Name:</strong> {patientProfile.name}</Typography>
-            <Typography variant="body1"><strong>DOB:</strong> {patientProfile.dob}</Typography>
-            <Typography variant="body1"><strong>Patient ID:</strong> {patientProfile.patientID}</Typography>
+            <Typography variant="body1" sx={{ mb: { xs: 1, sm: 0 } }}><strong>Name:</strong> {patientProfile.name}</Typography>
+            <Typography variant="body1" sx={{ mb: { xs: 1, sm: 0 } }}><strong>DOB:</strong> {patientProfile.dob}</Typography>
+            <Typography variant="body1" sx={{ mb: { xs: 1, sm: 0 } }}><strong>Patient ID:</strong> {patientProfile.patientID}</Typography>
           </Box>
         </Paper>
 
 
         <Box sx={{ mb: 4, mt: 2, display: 'flex', gap: 2 }}>
-  <Button
-    variant="contained"
-    sx={{
-      bgcolor: view === 'tabular' ? 'primary.darker' : '#5c6bc0', // Adjusted resting color
-      '&:hover': { bgcolor: 'primary.dark' },
-      color: 'white'
-    }}
-    onClick={() => setView('tabular')}
-  >
-    Latest Consultation Data
-  </Button>
-  <Button
-    variant="contained"
-    sx={{
-      bgcolor: view === 'allData' ? 'primary.darker' : '#5c6bc0', // Adjusted resting color
-      '&:hover': { bgcolor: 'primary.dark' },
-      color: 'white'
-    }}
-    onClick={() => setView('allData')}
-  >
-    Show All Data
-  </Button>
-  <Button
-    variant="contained"
-    sx={{
-      bgcolor: view === 'graphical' ? 'primary.darker' : '#5c6bc0', // Adjusted resting color
-      '&:hover': { bgcolor: 'primary.dark' },
-      color: 'white'
-    }}
-    onClick={() => setView('graphical')}
-  >
-    Graphical View
-  </Button>
+          <Button
+            variant="contained"
+            sx={{
+              bgcolor: view === 'tabular' ? 'primary.darker' : '#5c6bc0',
+              '&:hover': { bgcolor: 'primary.dark' },
+              color: 'white',
+              width: { xs: '100%', sm: 'auto' }, // Full width on xs screens
+            }}
+            onClick={() => setView('tabular')}
+          >
+            <Typography variant="button" display="block" sx={{ fontSize: { xs: '0.50rem', sm: '1rem' } }}>Latest Consultation Data</Typography>
+          </Button>
+          <Button
+            variant="contained"
+            sx={{
+              bgcolor: view === 'allData' ? 'primary.darker' : '#5c6bc0',
+              '&:hover': { bgcolor: 'primary.dark' },
+              color: 'white',
+              width: { xs: '100%', sm: 'auto' }, // Full width on xs screens
+            }}
+            onClick={() => setView('allData')}
+          >
+            <Typography variant="button" display="block" sx={{ fontSize: { xs: '0.50rem', sm: '1rem' } }}>Show All Data</Typography>
+          </Button>
+          <Button
+            variant="contained"
+            sx={{
+              bgcolor: view === 'graphical' ? 'primary.darker' : '#5c6bc0',
+              '&:hover': { bgcolor: 'primary.dark' },
+              color: 'white',
+              width: { xs: '100%', sm: 'auto' },
+            }}
+            onClick={() => setView('graphical')}
+          >
+            <Typography variant="button" display="block" sx={{ fontSize: { xs: '0.50rem', sm: '1rem' } }}>Graphical View</Typography>
+          </Button>
 
-  <Button
-    variant="contained"
-    sx={{
-      bgcolor: view === 'manageDesired' ? 'primary.darker' : '#5c6bc0', 
-      '&:hover': { bgcolor: 'primary.dark' },
-      color: 'white'
-    }}
-    onClick={() => setView('manageDesired')}
-  >
-    Manage Desired SNOMED Values
-  </Button>
+          <Button
+            variant="contained"
+            sx={{
+              bgcolor: view === 'manageDesired' ? 'primary.darker' : '#5c6bc0',
+              '&:hover': { bgcolor: 'primary.dark' },
+              color: 'white',
+              width: { xs: '100%', sm: 'auto' },
+            }}
+            onClick={() => setView('manageDesired')}
+          >
+            <Typography variant="button" display="block" sx={{ fontSize: { xs: '0.50rem', sm: '1rem' } }}>Manage Desired SNOMED Values</Typography>
+          </Button>
 
 
-  <Button
-    variant="contained"
-    sx={{
-      marginLeft: 'auto',
-      bgcolor: 'primary.dark', 
-      '&:hover': {
-        bgcolor: 'primary.darker',
-      },
-      color: 'white',
-      fontSize: '1rem',
-      padding: '10px 20px',
-    }}
-    onClick={handleNewConsultationClick}
-  >
-    New Consultation
-  </Button>
-</Box>
+          <Button
+            variant="contained"
+            sx={{
+              marginLeft: 'auto',
+              bgcolor: 'primary.dark',
+              '&:hover': {
+                bgcolor: 'primary.darker',
+              },
+              color: 'white',
+              fontSize: '1rem',
+              padding: '10px 20px',
+            }}
+            onClick={handleNewConsultationClick}
+          >
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <AddBoxIcon sx={{ display: { xs: 'none', sm: 'inline' } }} />
+              <Typography variant="button" display="block" sx={{ fontSize: { xs: '0.50rem', sm: '1rem' } }}>New Consultation</Typography>
+            </Box>
+          </Button>
+        </Box>
 
 
 
@@ -349,7 +357,7 @@ function Dashboard() {
               </Typography>
 
               {/* Move the SNOMED Index Glossary link to the top right of the card */}
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+              <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
                 <Box>
                   <Typography variant="h6" component="div">
                     <strong>Consultation Note:</strong>
@@ -365,7 +373,7 @@ function Dashboard() {
               <strong><u>Observations recorded</u></strong>
 
               <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <Table sx={{ minWidth: 250 }} aria-label="simple table">
                   <TableHead>
                     <TableRow>
                       <TableCell><strong>SNOMED Code</strong></TableCell>
@@ -510,98 +518,6 @@ function Dashboard() {
         <SuccessDialog />
 
 
-        {/* <Card elevation={4} style={{ marginTop: '20px' }} >
-          <CardContent> */}
-        {/* <Typography variant="h4" gutterBottom >
-              Today's Consultation
-            </Typography>
-
-
-
-            <TextField
-              label="Problem Description"
-              variant="outlined"
-              margin="normal"
-              fullWidth
-              multiline
-              rows={4}
-              {...register("notes", {
-                required: 'Problem description is required',
-              })}
-              error={!!errors.notes}
-              helperText={errors.notes?.message}
-            />
-
-            <Typography sx={{ mt: 4, mb: 2 }}>Session Values:</Typography>
-            <Grid container spacing={2}>
-
-              {fields.map((item, index) => (
-                <Grid item xs={12} key={item.id}>
-                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <TextField
-                      label={`SNOMED ${index + 1} CT Code `}
-                      variant="outlined"
-                      sx={{ mr: 1, flex: 1 }}
-                      {...register(`sessionValues.${index}.snowmedName`, {
-                        required: 'SNOMED CT Code is required',
-                        pattern: {
-                          value: /^[0-9]+$/,
-                          message: 'Invalid SNOMED CT code',
-                        },
-                      })}
-                      error={errors.sessionValues?.[index]?.snowmedName ? true : false}
-                      helperText={errors.sessionValues?.[index]?.snowmedName?.message || ''}
-                    />
-                    <TextField
-                      label={`LOINC ${index + 1} Name `}
-                      variant="outlined"
-                      sx={{ mr: 1, flex: 1 }}
-                      {...register(`sessionValues.${index}.loincName`, {
-                        required: 'LOINC Name is required',
-                      })}
-                      error={errors.sessionValues?.[index]?.loincName ? true : false}
-                      helperText={errors.sessionValues?.[index]?.loincName?.message || ''}
-                    />
-
-
-
-                    <TextField
-                      label={`Value ${index + 1}`}
-                      type="text"
-                      variant="outlined"
-                      sx={{ mr: 1, flex: 1 }}
-                      {...register(`sessionValues.${index}.value`, {
-                        required: 'Value is required',
-                        pattern: {
-                          value: /^\d*\.?\d+$/,
-                          message: 'Invalid value',
-                        },
-                        setValueAs: v => v === "" ? "" : String(v),
-                        onInput: (e) => {
-                          e.target.value = e.target.value.replace(/^-/, '');
-                        },
-                      })}
-                      error={!!errors.sessionValues?.[index]?.value}
-                      helperText={errors.sessionValues?.[index]?.value?.message}
-                    />
-
-                    <IconButton aria-label="delete" onClick={() => remove(index)}>
-                      <DeleteIcon />
-                    </IconButton>
-                  </Box>
-                </Grid>
-              ))}
-
-              <IconButton color="primary" aria-label="add field" onClick={() => append({ snowmedName: '', loincName: '', value: '' })}>
-                <AddCircleOutlineIcon />
-              </IconButton>
-            </Grid>
-
-            <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: theme.spacing(2), mt: 4 }}>
-              <Button variant="contained" color="primary" startIcon={<SaveIcon />} type="submit">Save</Button>
-            </Box> */}
-        {/* </CardContent>
-        </Card> */}
       </form>
 
 

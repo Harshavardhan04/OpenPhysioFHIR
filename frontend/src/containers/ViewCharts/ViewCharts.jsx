@@ -9,8 +9,15 @@ function ViewCharts({ selectedSnomed, snomedOptions, chartData, setSelectedSnome
         <Typography variant="h4" gutterBottom component="div">
           Observation Chart
         </Typography>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <FormControl sx={{ minWidth: 240 }} margin="normal">
+        <Box 
+          sx={{ 
+            display: 'flex', 
+            flexDirection: { xs: 'column', sm: 'row' }, 
+            justifyContent: 'space-between', 
+            alignItems: { xs: 'flex-start', sm: 'center' }
+          }}
+        >
+          <FormControl sx={{ minWidth: { xs: '100%', sm: 240 }, mb: { xs: 2, sm: 0 } }} margin="normal">
             <InputLabel id="snomed-select-label">SNOMED Code</InputLabel>
             <Select
               labelId="snomed-select-label"
@@ -23,7 +30,16 @@ function ViewCharts({ selectedSnomed, snomedOptions, chartData, setSelectedSnome
               ))}
             </Select>
           </FormControl>
-          <Typography variant="h6" gutterBottom component="div" sx={{ mr: 2 }}>
+          <Typography 
+            variant="h6" 
+            gutterBottom 
+            component="div" 
+            sx={{ 
+              mr: { sm: 2 },
+              mt: { xs: -2, sm: 0 },
+              width: { xs: '100%', sm: 'auto' }
+            }}
+          >
             {selectedSnomed && `SNOMED Code: ${selectedSnomed}`}
           </Typography>
         </Box>
@@ -33,7 +49,7 @@ function ViewCharts({ selectedSnomed, snomedOptions, chartData, setSelectedSnome
             options={{
               responsive: true,
               maintainAspectRatio: true,
-              aspectRatio: 4,
+              aspectRatio: 3, // Adjust aspect ratio here
               plugins: {
                 legend: {
                   position: 'top',
