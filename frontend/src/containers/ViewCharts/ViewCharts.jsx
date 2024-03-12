@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, CardContent, Typography, Box, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import { Line } from 'react-chartjs-2';
 
-function ViewCharts({ selectedSnomed, snomedOptions, chartData, setSelectedSnomed }) {
+function ViewCharts({ selectedSnomed, snomedOptions, chartData, setSelectedSnomed, dates }) {
   return (
     <Card elevation={4}>
       <CardContent>
@@ -45,11 +45,14 @@ function ViewCharts({ selectedSnomed, snomedOptions, chartData, setSelectedSnome
         </Box>
         {selectedSnomed && chartData.labels && (
           <Line
-            data={chartData}
+            data={{
+              ...chartData,
+              labels: chartData.labels.map((label, index) => `${label} (${dates[index]})`)
+            }}
             options={{
               responsive: true,
               maintainAspectRatio: true,
-              aspectRatio: 3, // Adjust aspect ratio here
+              aspectRatio: 3,
               plugins: {
                 legend: {
                   position: 'top',

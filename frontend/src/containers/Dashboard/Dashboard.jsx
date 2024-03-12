@@ -57,7 +57,9 @@ function Dashboard() {
   const [sessionValues, setSessionValues] = useState([]);
   const [selectedSnomed, setSelectedSnomed] = useState('');
   const [consultationNote, setConsultationNote] = useState('');
+  const[consultationDate, setConsultationDate] = useState('');
   const [chartData, setChartData] = useState({});
+  const [dates,setDates] = useState([]);
   const [snomedOptions, setSnomedOptions] = useState([]);
   const [snomedCodesAndValues, setSnomedCodesAndValues] = useState([]);
   const [showNewConsultation, setShowNewConsultation] = useState(false);
@@ -129,6 +131,7 @@ function Dashboard() {
 
         const latestObservations = data.latest_observations;
         const latestNote = data.latest_note;
+        const date = data.date;
 
         const measurementsArray = Object.entries(latestObservations).map(([snowmedName, value]) => ({
           snowmedName,
@@ -138,6 +141,7 @@ function Dashboard() {
 
         setSessionValues(measurementsArray);
         setConsultationNote(latestNote);
+        setConsultationDate(date);
       } catch (error) {
         console.error("Failed to fetch last consultation:", error);
       }
@@ -174,10 +178,11 @@ function Dashboard() {
       const response = await axios.post('/chart-data', { snomedCode });
       const observations = response.data.observations;
       const desired = response.data.desired;
+      const dates = response.data.dates;
 
       const labels = observations.map((_, index) => `Session ${index + 1}`);
       const data = observations.map(value => value !== undefined ? value : NaN);
-
+      setDates(dates);
       setChartData({
         labels,
         datasets: [
@@ -283,7 +288,7 @@ function Dashboard() {
             }}
             onClick={() => setView('tabular')}
           >
-            <Typography variant="button" display="block" sx={{ fontSize: { xs: '0.50rem', sm: '1rem' } }}>Latest Consultation Data</Typography>
+<Typography variant="button" display="block" sx={{ fontSize: { xs: '0.50rem', sm: '1rem' } }}>Latest Consultation Data</Typography>
           </Button>
           <Button
             variant="contained"
@@ -295,7 +300,7 @@ function Dashboard() {
             }}
             onClick={() => setView('allData')}
           >
-            <Typography variant="button" display="block" sx={{ fontSize: { xs: '0.50rem', sm: '1rem' } }}>Show All Data</Typography>
+<Typography variant="button" display="block" sx={{ fontSize: { xs: '0.50rem', sm: '1rem' } }}>Show All Data</Typography>
           </Button>
           <Button
             variant="contained"
@@ -303,7 +308,7 @@ function Dashboard() {
               bgcolor: view === 'graphical' ? 'primary.darker' : '#5c6bc0',
               '&:hover': { bgcolor: 'primary.dark' },
               color: 'white',
-              width: { xs: '100%', sm: 'auto' },
+              width: { xs: '100%', sm: 'auto' }, 
             }}
             onClick={() => setView('graphical')}
           >
@@ -316,7 +321,7 @@ function Dashboard() {
               bgcolor: view === 'manageDesired' ? 'primary.darker' : '#5c6bc0',
               '&:hover': { bgcolor: 'primary.dark' },
               color: 'white',
-              width: { xs: '100%', sm: 'auto' },
+              width: { xs: '100%', sm: 'auto' }, 
             }}
             onClick={() => setView('manageDesired')}
           >
@@ -363,7 +368,15 @@ function Dashboard() {
                     <strong>Consultation Note:</strong>
                   </Typography>
                   <Typography variant="body1" sx={{ marginBottom: 2 }}>
-                    {consultationNote}
+                    {consultationNote} 
+
+                  </Typography>
+                  <Typography variant="h6" component="div">
+                    <strong>Consultation Date:</strong>
+                  </Typography>
+                  <Typography variant="body1" sx={{ marginBottom: 2 }}>
+                    {consultationDate} 
+
                   </Typography>
                 </Box>
                 <a href="https://www.csp.org.uk/system/files/csp_snomed_ct_subsets_20160414_v1.pdf" class="snomed-glossary-button" target="_blank">SNOMED Index Glossary</a>
@@ -405,6 +418,7 @@ function Dashboard() {
             snomedOptions={snomedOptions}
             chartData={chartData}
             setSelectedSnomed={setSelectedSnomed} // Make sure this function is defined in Dashboard component
+            dates = {dates}
           />
         )}
 
@@ -518,6 +532,98 @@ function Dashboard() {
         <SuccessDialog />
 
 
+        {/* <Card elevation={4} style={{ marginTop: '20px' }} >
+          <CardContent> */}
+        {/* <Typography variant="h4" gutterBottom >
+              Today's Consultation
+            </Typography>
+
+
+
+            <TextField
+              label="Problem Description"
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              multiline
+              rows={4}
+              {...register("notes", {
+                required: 'Problem description is required',
+              })}
+              error={!!errors.notes}
+              helperText={errors.notes?.message}
+            />
+
+            <Typography sx={{ mt: 4, mb: 2 }}>Session Values:</Typography>
+            <Grid container spacing={2}>
+
+              {fields.map((item, index) => (
+                <Grid item xs={12} key={item.id}>
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <TextField
+                      label={`SNOMED ${index + 1} CT Code `}
+                      variant="outlined"
+                      sx={{ mr: 1, flex: 1 }}
+                      {...register(`sessionValues.${index}.snowmedName`, {
+                        required: 'SNOMED CT Code is required',
+                        pattern: {
+                          value: /^[0-9]+$/,
+                          message: 'Invalid SNOMED CT code',
+                        },
+                      })}
+                      error={errors.sessionValues?.[index]?.snowmedName ? true : false}
+                      helperText={errors.sessionValues?.[index]?.snowmedName?.message || ''}
+                    />
+                    <TextField
+                      label={`LOINC ${index + 1} Name `}
+                      variant="outlined"
+                      sx={{ mr: 1, flex: 1 }}
+                      {...register(`sessionValues.${index}.loincName`, {
+                        required: 'LOINC Name is required',
+                      })}
+                      error={errors.sessionValues?.[index]?.loincName ? true : false}
+                      helperText={errors.sessionValues?.[index]?.loincName?.message || ''}
+                    />
+
+
+
+                    <TextField
+                      label={`Value ${index + 1}`}
+                      type="text"
+                      variant="outlined"
+                      sx={{ mr: 1, flex: 1 }}
+                      {...register(`sessionValues.${index}.value`, {
+                        required: 'Value is required',
+                        pattern: {
+                          value: /^\d*\.?\d+$/,
+                          message: 'Invalid value',
+                        },
+                        setValueAs: v => v === "" ? "" : String(v),
+                        onInput: (e) => {
+                          e.target.value = e.target.value.replace(/^-/, '');
+                        },
+                      })}
+                      error={!!errors.sessionValues?.[index]?.value}
+                      helperText={errors.sessionValues?.[index]?.value?.message}
+                    />
+
+                    <IconButton aria-label="delete" onClick={() => remove(index)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </Box>
+                </Grid>
+              ))}
+
+              <IconButton color="primary" aria-label="add field" onClick={() => append({ snowmedName: '', loincName: '', value: '' })}>
+                <AddCircleOutlineIcon />
+              </IconButton>
+            </Grid>
+
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: theme.spacing(2), mt: 4 }}>
+              <Button variant="contained" color="primary" startIcon={<SaveIcon />} type="submit">Save</Button>
+            </Box> */}
+        {/* </CardContent>
+        </Card> */}
       </form>
 
 

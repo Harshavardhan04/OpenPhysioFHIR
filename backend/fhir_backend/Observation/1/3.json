@@ -6,11 +6,12 @@
         "coding": [
             {
                 "system": "http://loinc.org",
-                "code": "2"
+                "code": "1"
             }
         ]
     },
-    "valueString": "20",
+    "effectiveDateTime": "2024-03-12 15:48:59.039882",
+    "valueString": "23",
     "bodySite": {
         "coding": [
             {
