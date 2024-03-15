@@ -1,4 +1,4 @@
-# Backend Functions Documentation
+# Backend Functions and Flask Server Documentation
 
 ## Function: createPatient
 - **Description**: Creates a Patient resource from a given dictionary.
@@ -109,3 +109,51 @@
   - `snomed`: An integer representing the SNOMED code.
   - `path`: A string specifying the path to the observations.
 - **Returns**: A list of dates corresponding to the observations.
+
+
+## Subsection: Flask Server (base.py)
+
+The `base.py` file initializes and configures the Flask server, sets up CORS (Cross-Origin Resource Sharing) to allow frontend communication, and defines routes for the various API endpoints used by the web application.
+
+### Flask Server Initialization
+- **Purpose**: To create an instance of the Flask server and configure CORS for different routes.
+- **Routes**:
+  - `/profile`: Handles requests related to the patient's profile data.
+  - `/past-data`: Retrieves historical data for the patient.
+  - `/chart-data`: Fetches data needed for chart visualizations.
+  - `/desired`: Manages the desired values for different SNOMED codes for the patient.
+  - `/last-consultation`: Retrieves data related to the patient's last consultation.
+
+### Class: Patient
+- **Description**: A class to facilitate sharing and editing patient data across different functions.
+- **Attributes**:
+  - `id`: Holds the patient's identifier which is used across API routes.
+
+### API Route: /search-profile
+- **Method**: POST
+- **Description**: Searches for a patient's profile based on the patient ID provided in the request.
+- **Returns**: JSON data of the patient's profile or an error message if not found.
+
+### API Route: /profile
+- **Methods**: GET, POST
+- **Description**: Handles the retrieval and updating of the patient's session data. The GET method fetches the patient's profile data, while the POST method updates it with new session data.
+
+### API Route: /past-data
+- **Methods**: POST, GET
+- **Description**: Retrieves past data entries for a patient within a specified range. Requires 'start', 'end', and 'patientId' in the request body.
+
+### API Route: /desired
+- **Methods**: GET, POST
+- **Description**: Retrieves or updates desired values for a patient. The GET method fetches all desired values, and the POST method updates a specific desired value based on the SNOMED code provided.
+
+### API Route: /chart-data
+- **Method**: POST
+- **Description**: Retrieves data for chart visualizations based on the SNOMED code provided in the request.
+
+### API Route: /last-consultation
+- **Method**: GET
+- **Description**: Fetches details of the last consultation for the patient, including observations and notes.
+
+### Main Block
+- **Purpose**: The conditional `if __name__ == "__main__":` block runs the Flask server when the `base.py` file is executed as the main program.
+- **Configuration**: The server is set to run in debug mode to provide detailed error logs and auto-reload during development.
