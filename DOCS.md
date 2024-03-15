@@ -157,3 +157,44 @@ The `base.py` file initializes and configures the Flask server, sets up CORS (Cr
 ### Main Block
 - **Purpose**: The conditional `if __name__ == "__main__":` block runs the Flask server when the `base.py` file is executed as the main program.
 - **Configuration**: The server is set to run in debug mode to provide detailed error logs and auto-reload during development.
+
+
+# PastDataPage Component Documentation
+
+The `PastDataPage` component is a part of a healthcare data management application, designed for visualizing past consultation data for patients. It provides functionalities to view and export data within a specified consultation range.
+
+## Features
+
+- **Date Range Selection**: Users can select a range of consultation numbers to filter the data they wish to view.
+- **Data Fetching**: The component makes a POST request to `/past-data` with the selected start and end consultation numbers to fetch relevant data.
+- **Data Display**: Fetched data are displayed in a tabular format, including consultation numbers, SNOMED codes, values, and dates.
+- **Data Export**: Users can export the data of a particular consultation as a CSV file.
+
+## State Management
+
+- `snomedData`: An object containing SNOMED codes and their corresponding values.
+- `notes`: An array storing notes associated with each consultation.
+- `dates`: An object mapping SNOMED codes to arrays of dates.
+- `startConsultation` and `endConsultation`: States for managing the selected range of consultations.
+- `selectedSNOMED`: An array of selected SNOMED codes for which data should be displayed.
+- `SNOMEDOptions`: An array of SNOMED codes available for selection.
+
+## Functionality
+
+- **Effect Hook**: On component mount or when `startConsultation` or `endConsultation` change, it triggers a data fetch.
+- **Data Download**: The `downloadConsultationData` function generates and triggers a download of the consultation data in CSV format.
+
+## UI Components
+
+- **TextField**: For inputting the start and end consultation numbers.
+- **Autocomplete**: To allow selection of multiple SNOMED codes from the available options.
+- **Table**: For displaying the consultation data in a structured format.
+- **Button**: To trigger the data download function.
+
+## Usage
+
+Include the `PastDataPage` component within a parent component's render method, ensuring that the backend is correctly set up to handle the required endpoints.
+
+```jsx
+<PastDataPage />
+
