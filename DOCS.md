@@ -111,7 +111,7 @@
 - **Returns**: A list of dates corresponding to the observations.
 
 
-## Subsection: Flask Server (base.py)
+# Flask Server (base.py) documentation
 
 The `base.py` file initializes and configures the Flask server, sets up CORS (Cross-Origin Resource Sharing) to allow frontend communication, and defines routes for the various API endpoints used by the web application.
 
