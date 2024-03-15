@@ -1,3 +1,5 @@
+# System Documentation
+
 # Backend Functions and Flask Server Documentation
 
 ## Function: createPatient
@@ -276,10 +278,63 @@ The component interacts with the `/desired` endpoint to fetch and update desired
 
 ## Usage
 
-Simply import and use the component in your parent component as follows:
+Simply import and use the component in the parent component (Dashboard) as follows:
 
 ```jsx
 <Desired />
+```
+# Dashboard Component Documentation
+
+The `Dashboard` component is the central hub of the application's user interface, where users can access various functionalities including patient profiles, consultation data, and visualization of observations.
+
+## Features
+
+- **Patient Profile**: Display basic patient information such as name, date of birth, and patient ID.
+- **Consultation Notes**: View and record notes from patient consultations.
+- **Session Values**: Manage measurements taken during patient sessions.
+- **View Modes**: Toggle between tabular data, graphical views of data, and managing desired SNOMED values.
+- **New Consultation**: Add new consultation data for a patient.
+
+## Integration with Other Components
+
+- **PastDataPage**: Provides a detailed historical view of past consultations.
+- **ViewCharts**: Visualizes patient data in a chart format for better analysis.
+- **Desired**: Allows users to manage the desired values associated with SNOMED codes.
+
+## State Management
+
+- `view`: Controls which component view to display.
+- `patientProfile`: Contains patient's personal information.
+- `sessionValues`: Stores data from the current or last session.
+- `chartData`: Data structure for chart visualization.
+- `snomedOptions`: Available SNOMED codes for selection in the UI.
+- `snomedCodesAndValues`: Current SNOMED codes and their values.
+
+## API Integration
+
+The component interacts with several endpoints such as `/profile`, `/last-consultation`, `/chart-data`, and `/desired` to fetch and post data.
+
+## Functionality
+
+- **Data Fetching**: On component mount, patient profile data, last consultation, and SNOMED options are fetched from the backend.
+- **Data Posting**: On form submission, current session data is posted to the backend to update the patient profile.
+- **Dynamic Views**: The user can switch between different data views and manage patient data effectively.
+
+## UI Components
+
+- **Typography**: For displaying text and labels.
+- **Button**: For triggering actions like fetching data, submitting forms, and changing views.
+- **Dialog**: To confirm that session data was saved successfully.
+- **TextField**: For inputting text data such as consultation notes and session values.
+- **Table**: To display the latest consultation details in tabular form.
+- **FormControl**: For selecting SNOMED codes.
+
+## Usage
+
+Simply import and render the component in the application as follows:
+
+```jsx
+<Dashboard />
 ```
 
 
