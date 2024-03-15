@@ -197,4 +197,48 @@ Include the `PastDataPage` component within a parent component's render method, 
 
 ```jsx
 <PastDataPage />
+```
+# ViewCharts Component Documentation
+
+The `ViewCharts` component is designed to display an interactive line chart representing patient observations over time. It is built using React and utilizes the `react-chartjs-2` library for rendering the chart.
+
+## Features
+
+- **SNOMED Code Selection**: A dropdown menu allows users to select a SNOMED code to display related observations.
+- **Chart Display**: Utilizes the `Line` component from `react-chartjs-2` to render observation values graphically.
+- **Responsive Design**: The chart is responsive and adapts to various screen sizes for optimal viewing.
+
+## Props
+
+- `selectedSnomed`: The currently selected SNOMED code.
+- `snomedOptions`: An array of available SNOMED codes for selection.
+- `chartData`: The data object that contains values to be displayed on the chart.
+- `setSelectedSnomed`: A function to update the state when a new SNOMED code is selected.
+- `dates`: An array of dates corresponding to each observation value.
+
+## Functionality
+
+- The component displays a line chart representing the trend of observations based on the selected SNOMED code.
+- The labels on the x-axis combine the session number with the corresponding date for each observation.
+
+## UI Components
+
+- **Card**: Wraps the chart and selection controls in a Material-UI card for a clean layout.
+- **FormControl and Select**: Used to build the dropdown menu for SNOMED code selection.
+- **Typography**: Displays titles and selected SNOMED code information.
+
+## Usage
+
+To incorporate the `ViewCharts` component into a parent component, pass the required props as follows:
+
+```jsx
+<ViewCharts
+  selectedSnomed={selectedSnomed}
+  snomedOptions={snomedOptions}
+  chartData={chartData}
+  setSelectedSnomed={setSelectedSnomed}
+  dates={dates}
+/>
+```
+
 
