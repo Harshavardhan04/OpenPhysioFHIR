@@ -240,5 +240,46 @@ To incorporate the `ViewCharts` component into a parent component, pass the requ
   dates={dates}
 />
 ```
+# Desired Component Documentation
+
+The `Desired` component in the application is responsible for managing the desired values associated with various SNOMED codes used within the system. It provides an interface for viewing and editing these values.
+
+## Features
+
+- **List Desired Values**: Display a list of SNOMED codes alongside their corresponding desired values.
+- **Edit Desired Values**: Allows for the in-place editing of the desired values.
+- **Update Functionality**: Submit new desired values to the backend via API calls.
+
+## Props
+
+This component does not take any props and manages its state and effects internally.
+
+## State Management
+
+- `desiredValues`: An array of objects containing SNOMED codes and their desired values.
+- `editStates`: An object mapping each SNOMED code to its editable state value.
+
+## API Integration
+
+The component interacts with the `/desired` endpoint to fetch and update desired values.
+
+## Functionality
+
+- **Fetching Data**: On mount, the component fetches the existing desired values using a GET request to the `/desired` endpoint.
+- **Updating Data**: When a user modifies a desired value and clicks the update button, a POST request is made to the `/desired` endpoint with the new value.
+
+## UI Components
+
+- **Table**: To layout the SNOMED codes and desired values in a tabular format.
+- **TextField**: Allows users to enter new desired values.
+- **Button**: When clicked, triggers the update of the desired value for the corresponding SNOMED code.
+
+## Usage
+
+Simply import and use the component in your parent component as follows:
+
+```jsx
+<Desired />
+```
 
 
