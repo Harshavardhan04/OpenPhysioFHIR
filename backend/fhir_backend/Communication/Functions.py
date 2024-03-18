@@ -57,18 +57,41 @@ def saveNotes(
         f.write(json.dumps(dictionary, indent=4))
 
 
-def getImprovement(
-    id: str, path: str, snomed_desired
-) -> dict:  # each sub list represents the same body part eg right foot improvement
-    # expects path to be path to fhir
+# def getImprovement(
+#     id: str, path: str, snomed_desired
+# ) -> dict:  # each sub list represents the same body part eg right foot improvement
+#     # expects path to be path to fhir
+#     res = {value[0]: [] for value in snomed_desired}
+#     path = os.path.join(path, "Observation")
+#     files = os.listdir(path)
+#     files.sort(key=lambda x: os.path.getmtime(os.path.join(path, x)))
+    
+#     for filename in os.listdir(os.path.join(path, id)):
+#         with open(os.path.join(path, id, filename), "r") as file:
+#             obs = json.load(file)
+#             measurement = obs["valueString"]  # individual measurement
+#             # print(obs['bodySite']['coding'][0]['code'])
+#             res[obs["bodySite"]["coding"][0]["code"]].append(measurement)
+
+#     print("Values are",res)
+#     return res
+
+def getImprovement(id: str, path: str, snomed_desired) -> dict:
     res = {value[0]: [] for value in snomed_desired}
-    path = os.path.join(path, "Observation")
-    for filename in os.listdir(os.path.join(path, id)):
-        with open(os.path.join(path, id, filename), "r") as file:
+    observation_path = os.path.join(path, "Observation", id)
+
+    # Get all files in the directory and sort them by their last modification time (oldest first)
+    files = os.listdir(observation_path)
+    files.sort(key=lambda x: os.path.getmtime(os.path.join(observation_path, x)))
+
+    # Iterate over sorted files and append measurements
+    for filename in files:
+        with open(os.path.join(observation_path, filename), "r") as file:
             obs = json.load(file)
             measurement = obs["valueString"]  # individual measurement
-            # print(obs['bodySite']['coding'][0]['code'])
-            res[obs["bodySite"]["coding"][0]["code"]].append(measurement)
+            if obs["bodySite"]["coding"][0]["code"] in res:
+                res[obs["bodySite"]["coding"][0]["code"]].append(measurement)
+
     return res
 
 
@@ -252,16 +275,22 @@ def getLatestConsultation(
     return latest_observations, latest_note, date
 
 
+
 def getDates(id: int, snomed: int, path: str) -> list:
-    files = os.listdir(os.path.join(path, str(id)))
+    dir_path = os.path.join(path, str(id))
+    files = os.listdir(dir_path)
+    
+    files.sort(key=lambda x: os.path.getmtime(os.path.join(dir_path, x)))
 
     res = []
     for file in files:
-        with open(os.path.join(path, str(id), file), "r") as f:
+        print(os.path.basename(file))
+        with open(os.path.join(dir_path, file), "r") as f:
             obs = json.load(f)
 
             if int(obs["bodySite"]["coding"][0]["code"]) == int(snomed):
-
                 res.append(obs["effectiveDateTime"][:10])
+    
+    print("dates here are", res)
 
     return res
