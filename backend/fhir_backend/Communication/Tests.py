@@ -35,6 +35,14 @@ class TestSaving(unittest.TestCase):
         self.assertEqual([loaded[0]['content'][0]['attachment']['data'],loaded[1]['content'][0]['attachment']['data'] ], ["this is a test", "this is also a test"])
         #self.assertEqual(loaded[0]['content'][0]['attachment']['data'].decode('utf-8'), "this is a test")
         shutil.rmtree("src/backend/fhir/Notes/2")
+
+    def test_getDates(self):
+        #write a test to check that the dates in the observation is correct
+        dates = getDates(1, 888, "OpenPhysioFHIR/backend/fhir_backend/Observation")
+        self.assertEqual(dates, ["2024-03-11", "2024-03-12", "2024-03-12"])
+
+    def test_getInterval(self):
+        pass
     
 if __name__ == "__main__":
     unittest.main()
