@@ -42,7 +42,9 @@ class TestSaving(unittest.TestCase):
         self.assertEqual(dates, ["2024-03-11", "2024-03-12", "2024-03-12"])
 
     def test_getInterval(self):
-        pass
+        interval = getInterval(1, 1, 3, "OpenPhysioFHIR/backend/fhir_backend/Observation", "OpenPhysioFHIR/backend/fhir_backend/Notes")
+        self.assertEqual(interval[0], {'id': '1', 'status': 'final', 'content': [{'attachment': {'contentType': 'text/plain', 'data': 'this is a test'}}]})
+        self.assertEqual(interval[1], [{'id': '1', 'status': 'final', 'content': [{'attachment': {'contentType': 'text/plain', 'data': 'this is a test'}}]}])
     
 if __name__ == "__main__":
     unittest.main()

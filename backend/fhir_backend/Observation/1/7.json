@@ -1,0 +1,23 @@
+{
+    "resourceType": "Observation",
+    "id": "1",
+    "status": "final",
+    "code": {
+        "coding": [
+            {
+                "system": "http://loinc.org",
+                "code": "2"
+            }
+        ]
+    },
+    "effectiveDateTime": "2024-03-23 00:57:56.779912",
+    "valueString": "25",
+    "bodySite": {
+        "coding": [
+            {
+                "system": "http://snomed.info/sct",
+                "code": "999"
+            }
+        ]
+    }
+}

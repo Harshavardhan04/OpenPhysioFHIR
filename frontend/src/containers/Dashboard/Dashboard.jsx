@@ -15,11 +15,6 @@ import { useNavigate } from 'react-router-dom';
 import PastDataPage from '../PastData/PastData';
 import ViewCharts from '../ViewCharts/ViewCharts';
 import {
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Container,
   Card,
   CardContent,
   useTheme,
@@ -36,7 +31,7 @@ import {
   Legend,
 } from 'chart.js';
 
-// Register the chart.js components
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -53,7 +48,6 @@ function Dashboard() {
   const theme = useTheme();
   const [showSuccessDialog, setShowSuccessDialog] = useState(false);
   const [showDesired, setShowDesired] = useState(false);
-  const [showGraphicalView, setShowGraphicalView] = useState(false);
   const [sessionValues, setSessionValues] = useState([]);
   const [selectedSnomed, setSelectedSnomed] = useState('');
   const [consultationNote, setConsultationNote] = useState('');
@@ -147,11 +141,11 @@ function Dashboard() {
       }
     };
 
-    // Call the functions to fetch data
+
     fetchPatientProfile();
     fetchLastConsultation();
-    fetchSnomedOptions();  // This needs to be defined or imported
-  }, [setValue, setPatientProfile, setSessionValues, setConsultationNote]); // Add all dependencies here
+    fetchSnomedOptions();  
+  }, [setValue, setPatientProfile, setSessionValues, setConsultationNote]); 
 
 
 
@@ -262,7 +256,6 @@ function Dashboard() {
       padding: theme.spacing(3),
       backgroundColor: '#fff',
       borderRadius: theme.shape.borderRadius,
-      // boxShadow: theme.shadows[2]
     }}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Paper elevation={3} sx={{ p: 2, mb: 4 }}>
@@ -284,7 +277,7 @@ function Dashboard() {
               bgcolor: view === 'tabular' ? 'primary.darker' : '#5c6bc0',
               '&:hover': { bgcolor: 'primary.dark' },
               color: 'white',
-              width: { xs: '100%', sm: 'auto' }, // Full width on xs screens
+              width: { xs: '100%', sm: 'auto' }, 
             }}
             onClick={() => setView('tabular')}
           >
@@ -296,7 +289,7 @@ function Dashboard() {
               bgcolor: view === 'allData' ? 'primary.darker' : '#5c6bc0',
               '&:hover': { bgcolor: 'primary.dark' },
               color: 'white',
-              width: { xs: '100%', sm: 'auto' }, // Full width on xs screens
+              width: { xs: '100%', sm: 'auto' }, 
             }}
             onClick={() => setView('allData')}
           >
@@ -361,7 +354,6 @@ function Dashboard() {
                 Latest Consultation Details
               </Typography>
 
-              {/* Move the SNOMED Index Glossary link to the top right of the card */}
               <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
                 <Box>
                   <Typography variant="h6" component="div">
@@ -382,7 +374,6 @@ function Dashboard() {
                 <a href="https://www.csp.org.uk/system/files/csp_snomed_ct_subsets_20160414_v1.pdf" class="snomed-glossary-button" target="_blank">SNOMED Index Glossary</a>
               </Box>
 
-              {/* Add a title for the observations table */}
               <strong><u>Observations recorded</u></strong>
 
               <TableContainer component={Paper}>
@@ -417,7 +408,7 @@ function Dashboard() {
             selectedSnomed={selectedSnomed}
             snomedOptions={snomedOptions}
             chartData={chartData}
-            setSelectedSnomed={setSelectedSnomed} // Make sure this function is defined in Dashboard component
+            setSelectedSnomed={setSelectedSnomed} 
             dates = {dates}
           />
         )}
@@ -532,98 +523,6 @@ function Dashboard() {
         <SuccessDialog />
 
 
-        {/* <Card elevation={4} style={{ marginTop: '20px' }} >
-          <CardContent> */}
-        {/* <Typography variant="h4" gutterBottom >
-              Today's Consultation
-            </Typography>
-
-
-
-            <TextField
-              label="Problem Description"
-              variant="outlined"
-              margin="normal"
-              fullWidth
-              multiline
-              rows={4}
-              {...register("notes", {
-                required: 'Problem description is required',
-              })}
-              error={!!errors.notes}
-              helperText={errors.notes?.message}
-            />
-
-            <Typography sx={{ mt: 4, mb: 2 }}>Session Values:</Typography>
-            <Grid container spacing={2}>
-
-              {fields.map((item, index) => (
-                <Grid item xs={12} key={item.id}>
-                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <TextField
-                      label={`SNOMED ${index + 1} CT Code `}
-                      variant="outlined"
-                      sx={{ mr: 1, flex: 1 }}
-                      {...register(`sessionValues.${index}.snowmedName`, {
-                        required: 'SNOMED CT Code is required',
-                        pattern: {
-                          value: /^[0-9]+$/,
-                          message: 'Invalid SNOMED CT code',
-                        },
-                      })}
-                      error={errors.sessionValues?.[index]?.snowmedName ? true : false}
-                      helperText={errors.sessionValues?.[index]?.snowmedName?.message || ''}
-                    />
-                    <TextField
-                      label={`LOINC ${index + 1} Name `}
-                      variant="outlined"
-                      sx={{ mr: 1, flex: 1 }}
-                      {...register(`sessionValues.${index}.loincName`, {
-                        required: 'LOINC Name is required',
-                      })}
-                      error={errors.sessionValues?.[index]?.loincName ? true : false}
-                      helperText={errors.sessionValues?.[index]?.loincName?.message || ''}
-                    />
-
-
-
-                    <TextField
-                      label={`Value ${index + 1}`}
-                      type="text"
-                      variant="outlined"
-                      sx={{ mr: 1, flex: 1 }}
-                      {...register(`sessionValues.${index}.value`, {
-                        required: 'Value is required',
-                        pattern: {
-                          value: /^\d*\.?\d+$/,
-                          message: 'Invalid value',
-                        },
-                        setValueAs: v => v === "" ? "" : String(v),
-                        onInput: (e) => {
-                          e.target.value = e.target.value.replace(/^-/, '');
-                        },
-                      })}
-                      error={!!errors.sessionValues?.[index]?.value}
-                      helperText={errors.sessionValues?.[index]?.value?.message}
-                    />
-
-                    <IconButton aria-label="delete" onClick={() => remove(index)}>
-                      <DeleteIcon />
-                    </IconButton>
-                  </Box>
-                </Grid>
-              ))}
-
-              <IconButton color="primary" aria-label="add field" onClick={() => append({ snowmedName: '', loincName: '', value: '' })}>
-                <AddCircleOutlineIcon />
-              </IconButton>
-            </Grid>
-
-            <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: theme.spacing(2), mt: 4 }}>
-              <Button variant="contained" color="primary" startIcon={<SaveIcon />} type="submit">Save</Button>
-            </Box> */}
-        {/* </CardContent>
-        </Card> */}
       </form>
 
 

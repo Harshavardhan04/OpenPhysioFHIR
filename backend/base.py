@@ -35,18 +35,8 @@ def search_profile():
 
         patient.id = patientID
 
-
-        # Search for file based on patient name or NHS number
-        """
-        if patient_name:
-            file_path = os.path.join(profile_dir, f"{patient_name}.json")
-        elif nhs_number:
-            file_path = os.path.join(profile_dir, f"{nhs_number}.json")
-        else:
-            return jsonify({'status': 'error', 'message': 'No search criteria provided.'}), 400
-        """
         file_path = os.path.join(profile_dir, f"{patient.id}.json")
-        # print(file_path)
+
         try:
             with open(file_path, "r") as file:
                 data = json.load(file)
@@ -55,7 +45,6 @@ def search_profile():
             return jsonify({"status": "error", "message": "Profile not found."}), 404
 
 
-# profile_file_path = 'patient_files/test1.json'
 notes_path = "../backend/fhir_backend/Notes/"
 obs_path = "../backend/fhir_backend/Observation/"
 desired_path = "../backend/fhir_backend/Desired/"
@@ -67,17 +56,6 @@ def profile():
     if request.method == "POST":
         session_data = request.json
 
-        # print(session_data)# This should now only contain session-specific data
-        """
-        # Ensure 'data' key exists and is a list; append new session data
-        if 'data' not in data:
-            data['data'] = []
-        data['data'].append(session_data)  # Append new session to 'data' array
-
-        with open(profile_file_path, 'w') as file:
-            json.dump(data, file, indent=4)"""
-        
- 
         notes = createNotes(session_data["notes"], patient.id)
 
         measurements = [
@@ -115,12 +93,11 @@ def profile():
     elif request.method == "GET":
         try:
 
-
             with open(
                 os.path.join(profile_dir, str(patient.id) + ".json"), "r"
             ) as file:
                 data = json.load(file)
-                # print(data)
+
             return jsonify(data), 200
         except FileNotFoundError:
             return jsonify({"status": "error", "message": "Profile not found."}), 404
@@ -128,12 +105,10 @@ def profile():
 
 @api.route("/past-data", methods=["POST", "GET"])
 def get_past_data():
-    # Extract start and end from the POST request
     data = request.get_json()
     start = data.get("start")
     end = data.get("end")
     patient_id = patient.id  # Assuming the patient ID is also sent in the request
-    # print("Data",start,end,patient_id)
 
     if not all([start, end, patient_id]):
         return (
@@ -152,17 +127,15 @@ def get_past_data():
     generic_path = "../backend/fhir_backend"
 
     try:
-        # snomed_desired = getDesired(patient_id, desired_path)
         interval_data = getInterval(
             patient_id, int(start), int(end), generic_path, notes_path
         )
         date_snomed_dict = interval_data[2]
 
-# Now, you can access dates for each SNOMED code using date_snomed_dict
+        # You can access dates for each SNOMED code using date_snomed_dict
         for snomed, dates in date_snomed_dict.items():
             print(f"SNOMED Code: {snomed} has dates: {dates}")
 
-        # Assuming interval_data correctly returns the values and notes within the specified range
 
         response = jsonify(interval_data)
         response.headers.add("Access-Control-Allow-Origin", "*")  # Add CORS header
@@ -202,13 +175,12 @@ def manage_patient_desired():
         snomed_code = request_data.get("snomedCode")
         desired_value = request_data.get("desired")
 
-
         if not all([snomed_code, desired_value is not None]):
             return jsonify({"error": "Missing SNOMED code or desired value"}), 400
 
         try:
             saveDesired(patient.id, desired_value, desired_path, snomed_code)
-   
+
             return jsonify({"message": "Desired value updated successfully"}), 200
         except Exception as e:
             return jsonify({"error": str(e)}), 500
@@ -219,7 +191,7 @@ def get_chart_data():
     data = request.json
     patient_id = (
         patient.id
-    )  # This should be dynamically determined based on your application's context
+    )  
     snomed_code = data.get("snomedCode")
 
     if not snomed_code:
@@ -228,42 +200,55 @@ def get_chart_data():
     snomed_desired = getDesired(patient_id, desired_path)
     observations = getImprovement(patient_id, generic_path, snomed_desired)
 
-    # Extracting observations for the requested SNOMED code
     snomed_observations = observations.get(snomed_code, [])
     desired_value = next(
         (value for code, value in snomed_desired if code == snomed_code), None
     )
 
-    snomed_dates = getDates(patient_id, snomed_code, os.path.join(generic_path,"Observation"))
-    print("dates",snomed_dates)
+    snomed_dates = getDates(
+        patient_id, snomed_code, os.path.join(generic_path, "Observation")
+    )
+    print("dates", snomed_dates)
     if not snomed_observations:
         return (
             jsonify({"error": "No observations found for the provided SNOMED code"}),
             404,
         )
 
-    return jsonify({"observations": snomed_observations, "desired": desired_value, "dates": snomed_dates}), 200
-
+    return (
+        jsonify(
+            {
+                "observations": snomed_observations,
+                "desired": desired_value,
+                "dates": snomed_dates,
+            }
+        ),
+        200,
+    )
 
 
 @api.route("/last-consultation", methods=["GET"])
 def last_consultation():
 
-    patient_id = patient.id  
+    patient_id = patient.id
 
     try:
-
 
         consultation_data = getLatestConsultation(
             patient_id, generic_path, notes_path, desired_path
         )
         date_retrieved = consultation_data[2][-1]
 
-
-
-        return jsonify({"latest_observations": consultation_data[0],
-                        "latest_note": consultation_data[1],
-                        "date": date_retrieved}), 200
+        return (
+            jsonify(
+                {
+                    "latest_observations": consultation_data[0],
+                    "latest_note": consultation_data[1],
+                    "date": date_retrieved,
+                }
+            ),
+            200,
+        )
     except Exception as e:
 
         return jsonify({"error": str(e)}), 500

@@ -1,0 +1,13 @@
+{
+    "resourceType": "DocumentReference",
+    "id": "1",
+    "status": "final",
+    "content": [
+        {
+            "attachment": {
+                "contentType": "text/plain",
+                "data": "consultation 3 - improvements are good!"
+            }
+        }
+    ]
+}

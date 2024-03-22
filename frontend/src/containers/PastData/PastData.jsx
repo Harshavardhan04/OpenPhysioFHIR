@@ -3,10 +3,6 @@ import axios from 'axios';
 import {
     Box,
     Button,
-    Typography,
-    Dialog,
-    DialogTitle,
-    DialogContent,
     Table,
     TableBody,
     TableCell,
@@ -19,9 +15,6 @@ import {
     Container
 } from '@mui/material';
 
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { useNavigate } from 'react-router-dom';
-import { set } from 'react-hook-form';
 
 
 function PastDataPage() {
@@ -32,7 +25,6 @@ function PastDataPage() {
     const [endConsultation, setEndConsultation] = useState('');
     const [selectedSNOMED, setSelectedSNOMED] = useState([]);
     const [SNOMEDOptions, setSNOMEDOptions] = useState([]);
-    const navigate = useNavigate();
 
     useEffect(() => {
         if (startConsultation && endConsultation) {

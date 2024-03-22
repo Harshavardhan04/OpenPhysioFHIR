@@ -4,13 +4,11 @@ from fhir.resources.patient import Patient
 from fhir.resources.observation import Observation
 from fhir.resources.documentreference import DocumentReference
 
-# from fhir.resources import fhirdate
+
 import base64
 import datetime
 
 
-# needs more checks for existing files
-# need to check states of fhir obs/docs
 def createPatient(patient: dict) -> Patient:
     patient = json.dumps(patient)
     newPatient = Patient.parse_raw(patient)
@@ -53,28 +51,9 @@ def saveNotes(
         dictionary["content"][0]["attachment"]["data"] = dictionary["content"][0][
             "attachment"
         ]["data"].decode("utf-8")
-        # print(dictionary['content'][0]['attachment']['data'])
+
         f.write(json.dumps(dictionary, indent=4))
 
-
-# def getImprovement(
-#     id: str, path: str, snomed_desired
-# ) -> dict:  # each sub list represents the same body part eg right foot improvement
-#     # expects path to be path to fhir
-#     res = {value[0]: [] for value in snomed_desired}
-#     path = os.path.join(path, "Observation")
-#     files = os.listdir(path)
-#     files.sort(key=lambda x: os.path.getmtime(os.path.join(path, x)))
-    
-#     for filename in os.listdir(os.path.join(path, id)):
-#         with open(os.path.join(path, id, filename), "r") as file:
-#             obs = json.load(file)
-#             measurement = obs["valueString"]  # individual measurement
-#             # print(obs['bodySite']['coding'][0]['code'])
-#             res[obs["bodySite"]["coding"][0]["code"]].append(measurement)
-
-#     print("Values are",res)
-#     return res
 
 def getImprovement(id: str, path: str, snomed_desired) -> dict:
     res = {value[0]: [] for value in snomed_desired}
@@ -84,11 +63,10 @@ def getImprovement(id: str, path: str, snomed_desired) -> dict:
     files = os.listdir(observation_path)
     files.sort(key=lambda x: os.path.getmtime(os.path.join(observation_path, x)))
 
-    # Iterate over sorted files and append measurements
     for filename in files:
         with open(os.path.join(observation_path, filename), "r") as file:
             obs = json.load(file)
-            measurement = obs["valueString"]  # individual measurement
+            measurement = obs["valueString"]  
             if obs["bodySite"]["coding"][0]["code"] in res:
                 res[obs["bodySite"]["coding"][0]["code"]].append(measurement)
 
@@ -98,8 +76,7 @@ def getImprovement(id: str, path: str, snomed_desired) -> dict:
 
 def getNotes(id: str, path: str, filename: str = None) -> list:
     res = []
-    if filename is None:  # return all notes for patient
-        # Get all file paths
+    if filename is None:  
         file_paths = [
             os.path.join(path, id, name) for name in os.listdir(os.path.join(path, id))
         ]
@@ -107,7 +84,6 @@ def getNotes(id: str, path: str, filename: str = None) -> list:
         # Sort files by modification time in ascending order
         file_paths.sort(key=lambda x: os.path.getmtime(x))
 
-        # Read and append notes in sorted order
         for file_path in file_paths:
             with open(file_path, "r") as file:
                 notes = json.load(file)
@@ -123,9 +99,7 @@ def getNotes(id: str, path: str, filename: str = None) -> list:
 def createObservation(
     id, measurement: str, loinc: str, SNOMED: str, desired_path: str
 ) -> Observation:  # returns observation and session notes
-    # print("dateee",datetime.datetime.now())
     current_date = str(datetime.datetime.now())
-    # print("typeee",type(current_date))
     observation = Observation(
         id=str(id),
         status="final",
@@ -139,13 +113,9 @@ def createObservation(
         observation.validate()
     except Exception as e:
         print(f"Validation error: {e}")"""
-    # print("before get desired")
     snomeds = getDesired(id, desired_path)
-    # print("after get desired")
     snomeds = [snomed[0] for snomed in snomeds]
     if SNOMED not in snomeds:
-        # print("existing snowmeds", snomeds)
-        # print("snomed not in snomed")
         saveDesired(id, 0, desired_path, SNOMED)
     return observation
 
@@ -153,14 +123,11 @@ def createObservation(
 def createNotes(notes: str, id: int) -> DocumentReference:
     if isinstance(notes, bytes):
         notes = notes.decode("utf-8")
-    # print("dateee",datetime.datetime.now())
     current_date = str(datetime.datetime.now())
-    # print("typeee",type(current_date))
 
     notes_ = DocumentReference(
         id=str(id),
         status="final",
-        # {"contentType": "text/plain", "data": notes}
         content=[
             {
                 "attachment": {
@@ -208,7 +175,6 @@ def getInterval(
         str(id), fhir_path, getDesired(id, os.path.join(fhir_path, "Desired"))
     )
 
-    # print(getNotes(str(id), notes_path))
     notes = getNotes(str(id), notes_path)[start - 1 : end]  # adjust for off by 1 error
     notes_specific = [
         notes[x]["content"][0]["attachment"]["data"] for x in range(len(notes))
