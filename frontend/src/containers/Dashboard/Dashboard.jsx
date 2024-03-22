@@ -274,7 +274,7 @@ function Dashboard() {
           <Button
             variant="contained"
             sx={{
-              bgcolor: view === 'tabular' ? 'primary.darker' : '#5c6bc0',
+              bgcolor: view === 'tabular' ? '#404a86' : '#5c6bc0',
               '&:hover': { bgcolor: 'primary.dark' },
               color: 'white',
               width: { xs: '100%', sm: 'auto' }, 
@@ -286,7 +286,7 @@ function Dashboard() {
           <Button
             variant="contained"
             sx={{
-              bgcolor: view === 'allData' ? 'primary.darker' : '#5c6bc0',
+              bgcolor: view === 'allData' ? '#404a86' : '#5c6bc0',
               '&:hover': { bgcolor: 'primary.dark' },
               color: 'white',
               width: { xs: '100%', sm: 'auto' }, 
@@ -298,7 +298,7 @@ function Dashboard() {
           <Button
             variant="contained"
             sx={{
-              bgcolor: view === 'graphical' ? 'primary.darker' : '#5c6bc0',
+              bgcolor: view === 'graphical' ? '#404a86' : '#5c6bc0',
               '&:hover': { bgcolor: 'primary.dark' },
               color: 'white',
               width: { xs: '100%', sm: 'auto' }, 
@@ -311,7 +311,7 @@ function Dashboard() {
           <Button
             variant="contained"
             sx={{
-              bgcolor: view === 'manageDesired' ? 'primary.darker' : '#5c6bc0',
+              bgcolor: view === 'manageDesired' ? '#404a86' : '#5c6bc0',
               '&:hover': { bgcolor: 'primary.dark' },
               color: 'white',
               width: { xs: '100%', sm: 'auto' }, 
@@ -337,7 +337,6 @@ function Dashboard() {
             onClick={handleNewConsultationClick}
           >
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <AddBoxIcon sx={{ display: { xs: 'none', sm: 'inline' } }} />
               <Typography variant="button" display="block" sx={{ fontSize: { xs: '0.50rem', sm: '1rem' } }}>New Consultation</Typography>
             </Box>
           </Button>
