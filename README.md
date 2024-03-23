@@ -42,7 +42,7 @@ Before you begin the deployment, you need to install some necessary tools and li
 
 Follow these steps to activate and run your application's backend.
 
-1. **Activate the Virtual Environment:** Navigate to your project's virtual environment directory and activate it:
+1. **Activate the Virtual Environment:** Navigate to your project's virtual environment directory (called 'venv', within 'backend' folder) and activate it:
 
     - macOS/Linux:
       ```bash
@@ -54,10 +54,10 @@ Follow these steps to activate and run your application's backend.
       .\Scripts\activate
       ```
 
-2. **Navigate to the Backend Directory:**
+2. **Navigate back to the Backend Directory:**
 
     ```bash
-    cd path/to/your/backend
+    cd ..
     ```
 
 3. **Set Flask App Environment Variable:**
