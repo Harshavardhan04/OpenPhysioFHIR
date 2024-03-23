@@ -40,7 +40,7 @@ Before you begin the deployment, you need to install some necessary tools and li
 
 ## Backend Activation
 
-Follow these steps to activate and run your application's backend.
+Follow these steps to activate and run the application's backend.
 
 1. **Activate the Virtual Environment:** Navigate to your project's virtual environment directory (called 'venv', within 'backend' folder) and activate it:
 
@@ -80,9 +80,9 @@ Follow these steps to activate and run your application's backend.
 
 ## Frontend Activation
 
-Follow these steps to set up and start the frontend of your application.
+Follow these steps to set up and start the frontend of the application.
 
-1. **Navigate to Your Frontend Directory:**
+1. **Navigate to Your Frontend Directory (called 'frontend'):**
 
     ```bash
     cd path/to/your/frontend
