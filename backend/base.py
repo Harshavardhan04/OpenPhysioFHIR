@@ -130,12 +130,6 @@ def get_past_data():
         interval_data = getInterval(
             patient_id, int(start), int(end), generic_path, notes_path
         )
-        date_snomed_dict = interval_data[2]
-
-        # You can access dates for each SNOMED code using date_snomed_dict
-        for snomed, dates in date_snomed_dict.items():
-            print(f"SNOMED Code: {snomed} has dates: {dates}")
-
 
         response = jsonify(interval_data)
         response.headers.add("Access-Control-Allow-Origin", "*")  # Add CORS header
@@ -208,7 +202,6 @@ def get_chart_data():
     snomed_dates = getDates(
         patient_id, snomed_code, os.path.join(generic_path, "Observation")
     )
-    print("dates", snomed_dates)
     if not snomed_observations:
         return (
             jsonify({"error": "No observations found for the provided SNOMED code"}),
