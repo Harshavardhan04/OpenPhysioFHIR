@@ -3,9 +3,6 @@ import os
 from fhir.resources.patient import Patient
 from fhir.resources.observation import Observation
 from fhir.resources.documentreference import DocumentReference
-
-
-import base64
 import datetime
 
 
@@ -14,16 +11,14 @@ def createPatient(patient: dict) -> Patient:
     newPatient = Patient.parse_raw(patient)
     return newPatient
 
-
 def savePatient(patient: Patient, directory: str) -> None:
     filename = patient.id + ".json"
     with open(os.path.join(directory, filename), "w") as f:
         f.write(json.dumps(patient.dict(), indent=4))
 
-
 def saveObservation(
-    observations: list, directory: str
-) -> None:  # expects a list of observations
+    observations: list, directory: str # expects a list of observations
+) -> None:  
     for observation in observations:
         if not os.path.exists(os.path.join(directory, observation.id)):
             os.mkdir(os.path.join(directory, observation.id))
@@ -38,8 +33,8 @@ def saveObservation(
 
 
 def saveNotes(
-    notes: DocumentReference, directory: str
-) -> None:  # directory is path to Notes folder
+    notes: DocumentReference, directory: str # directory is path to Notes folder
+) -> None:  
     if not os.path.exists(os.path.join(directory, notes.id)):
         os.mkdir(os.path.join(directory, notes.id))
         count = 0
@@ -51,22 +46,20 @@ def saveNotes(
         dictionary["content"][0]["attachment"]["data"] = dictionary["content"][0][
             "attachment"
         ]["data"].decode("utf-8")
-
         f.write(json.dumps(dictionary, indent=4))
 
 
 def getImprovement(id: str, path: str, snomed_desired) -> dict:
+    # each sub list represents the same body part eg right foot improvement
+    # expects path to be path to fhir
     res = {value[0]: [] for value in snomed_desired}
     observation_path = os.path.join(path, "Observation", id)
-
-    # Get all files in the directory and sort them by their last modification time (oldest first)
     files = os.listdir(observation_path)
     files.sort(key=lambda x: os.path.getmtime(os.path.join(observation_path, x)))
-
     for filename in files:
         with open(os.path.join(observation_path, filename), "r") as file:
             obs = json.load(file)
-            measurement = obs["valueString"]  
+            measurement = obs["valueString"]  # individual measurement
             if obs["bodySite"]["coding"][0]["code"] in res:
                 res[obs["bodySite"]["coding"][0]["code"]].append(measurement)
 
