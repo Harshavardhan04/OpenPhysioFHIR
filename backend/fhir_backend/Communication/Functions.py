@@ -250,6 +250,4 @@ def getDates(id: int, snomed: int, path: str) -> list:
             if int(obs["bodySite"]["coding"][0]["code"]) == int(snomed):
                 res.append(obs["effectiveDateTime"][:10])
     
-    print("dates here are", res)
-
     return res
