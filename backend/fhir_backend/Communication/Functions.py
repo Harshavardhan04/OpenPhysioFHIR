@@ -85,7 +85,6 @@ def getNotes(id: str, path: str, filename: str = None) -> list:
         with open(os.path.join(path, id, filename), "r") as file:
             notes = json.load(file)
             res.append(notes)
-    print(res)
     return res
 
 
@@ -243,7 +242,6 @@ def getDates(id: int, snomed: int, path: str) -> list:
 
     res = []
     for file in files:
-        print(os.path.basename(file))
         with open(os.path.join(dir_path, file), "r") as f:
             obs = json.load(f)
 
