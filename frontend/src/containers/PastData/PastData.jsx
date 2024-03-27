@@ -152,7 +152,7 @@ function PastDataPage() {
                                             <TableCell>{parseInt(startConsultation) + index}</TableCell>
                                             <TableCell>{snomed}</TableCell>
                                             <TableCell>{value}</TableCell>
-                                            <TableCell>{dates[snomed][index]}</TableCell>
+                                            <TableCell>{dates[snomed][parseInt(startConsultation)-1+index]}</TableCell>
                                             <TableCell>
                                                 <Button
                                                     variant="contained"
